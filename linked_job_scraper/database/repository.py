@@ -6,6 +6,19 @@ from loguru import logger
 import linked_job_scraper.config.settings as _cfg
 from models.db_models import JobSQL, ScrapeLog
 from models.pydantic_models import JobExtracted
+from storage.gcs_client import GCSClient
+
+_gcs: GCSClient | None = None
+
+
+def _get_gcs() -> GCSClient | None:
+    global _gcs
+    if _gcs is None:
+        try:
+            _gcs = GCSClient()
+        except Exception as e:
+            logger.warning(f"GCS unavailable — descriptions stored in DB: {e}")
+    return _gcs
 
 
 def _is_excluded_company(company_name: str | None) -> bool:
@@ -48,10 +61,42 @@ class JobRepository:
             return "bad_title"
 
         try:
+            description = job.description
+            gcs = _get_gcs()
+            if gcs and description:
+                try:
+                    # Use a placeholder ID for the path — will update after commit
+                    temp_orm = JobSQL(
+                        company_name=job.company_name,
+                        title=job.title,
+                        description=None,
+                        link=job.link,
+                        location=job.location,
+                        posted_date=datetime.now(timezone.utc),
+                        salary=job.salary.model_dump() if job.salary else None,
+                        source="linkedin",
+                    )
+                    self.session.add(temp_orm)
+                    self.session.flush()  # get the generated id
+                    gcs_uri = gcs.upload_description(
+                        job.company_name or "unknown",
+                        job.title,
+                        temp_orm.id,
+                        description,
+                    )
+                    temp_orm.description = gcs_uri
+                    self.session.commit()
+                    logger.info(f"Inserted: '{job.title}' @ '{job.company_name}' → {gcs_uri}")
+                    return "inserted"
+                except Exception as e:
+                    self.session.rollback()
+                    logger.warning(f"GCS upload failed, storing inline: {e}")
+                    description = job.description
+
             job_orm = JobSQL(
                 company_name=job.company_name,
                 title=job.title,
-                description=job.description,
+                description=description,
                 link=job.link,
                 location=job.location,
                 posted_date=datetime.now(timezone.utc),

@@ -29,6 +29,24 @@ logger.add(
 )
 
 
+_DATA_TECH_KEYWORDS = {
+    "analyst", "engineer", "scientist", "developer", "architect",
+    "mlops", "devops", "dataops", "machine learning", "data",
+    "business intelligence", "analytics", "etl", "sql", "python",
+    "cloud", "database", "pipeline", "artificial intelligence",
+    "llm", "nlp", "rag", "generative", "quantitative",
+    "platform", "big data", "deep learning", "modeling", "visualization",
+    "reporting", "tableau", "looker", "spark", "databricks", "snowflake", "dbt",
+}
+
+
+def _is_data_tech_title(title: str) -> bool:
+    if not title:
+        return True
+    t = title.lower()
+    return any(kw in t for kw in _DATA_TECH_KEYWORDS)
+
+
 def fetch_pending(session, batch: int, source: str | None) -> list:
     # NOTE: skip rows whose description (a gs:// URI for most rows) contains '???'
     # — these are scrape-time encoding casualties (em-dash mangled to '???' on
@@ -93,6 +111,16 @@ def run(batch: int, source: str | None, delay: float):
 
     for i, (job_id, title, company, description) in enumerate(rows, 1):
         try:
+            if not _is_data_tech_title(title):
+                session.execute(
+                    text("UPDATE jobsql SET skills_extracted = :s, enriched_at = :now WHERE id = :id"),
+                    {"s": json.dumps({"required_skills": []}), "now": datetime.now(timezone.utc), "id": job_id},
+                )
+                session.commit()
+                counts["empty"] += 1
+                logger.info(f"  [{i}/{len(rows)}] Skipped off-topic title: {title} @ {company}")
+                continue
+
             logger.info(f"  [{i}/{len(rows)}] {title} @ {company}")
             text_content = _get_description_text(description, gcs)
             if not text_content:
