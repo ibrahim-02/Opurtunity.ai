@@ -1,8 +1,16 @@
+import sys
+from pathlib import Path
+
+# Add repo root so shared modules (database/, llm/, etc.) are importable
+_ROOT = Path(__file__).resolve().parent.parent.parent
+if str(_ROOT) not in sys.path:
+    sys.path.insert(0, str(_ROOT))
+
 from fastapi import FastAPI, BackgroundTasks
 from loguru import logger
 
 from database.connection import init_db, SessionLocal
-from database.repository import JobRepository
+from linked_job_scraper.database.repository import JobRepository
 from llm.ollama_client import OllamaClient
 
 app = FastAPI(title="LinkedIn Job Scraper", version="1.0.0")
@@ -40,7 +48,7 @@ def health_check():
 
 @app.post("/scrape")
 def trigger_scrape(background_tasks: BackgroundTasks):
-    from main import run_pipeline
+    from linked_job_scraper.main import run_pipeline
 
     def _run_with_error_logging():
         try:

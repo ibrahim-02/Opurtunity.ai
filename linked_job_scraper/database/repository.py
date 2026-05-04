@@ -3,7 +3,7 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 from loguru import logger
 
-import config.settings as _cfg
+import linked_job_scraper.config.settings as _cfg
 from models.db_models import JobSQL, ScrapeLog
 from models.pydantic_models import JobExtracted
 
@@ -56,6 +56,7 @@ class JobRepository:
                 location=job.location,
                 posted_date=datetime.now(timezone.utc),
                 salary=job.salary.model_dump() if job.salary else None,
+                source="linkedin",
             )
             self.session.add(job_orm)
             self.session.commit()

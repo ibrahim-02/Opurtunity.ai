@@ -1,0 +1,24 @@
+{
+  "sites": ["indeed", "glassdoor", "zip_recruiter"],
+  "hours_old": 72,
+  "results_per_search": 50,
+  "country": "USA",
+  "searches": [
+    {"term": "Software Engineer",        "location": "United States"},
+    {"term": "Senior Software Engineer", "location": "United States"},
+    {"term": "Data Engineer",            "location": "United States"},
+    {"term": "Data Scientist",           "location": "United States"},
+    {"term": "Machine Learning Engineer","location": "United States"},
+    {"term": "Backend Engineer",         "location": "United States"},
+    {"term": "Frontend Engineer",        "location": "United States"},
+    {"term": "Full Stack Engineer",      "location": "United States"},
+    {"term": "DevOps Engineer",          "location": "United States"},
+    {"term": "Cloud Engineer",           "location": "United States"},
+    {"term": "Platform Engineer",        "location": "United States"},
+    {"term": "AI Engineer",              "location": "United States"},
+    {"term": "Python Developer",         "location": "United States"},
+    {"term": "React Developer",          "location": "United States"},
+    {"term": "Product Manager",          "location": "United States"},
+    {"term": "Engineering Manager",      "location": "United States"}
+  ]
+}

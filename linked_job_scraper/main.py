@@ -5,27 +5,27 @@ import threading
 import time as _time
 from pathlib import Path
 
+# Add repo root to sys.path so shared modules (database/, models/, llm/, etc.) are importable
+_ROOT = Path(__file__).resolve().parent.parent
+if str(_ROOT) not in sys.path:
+    sys.path.insert(0, str(_ROOT))
+
 from loguru import logger
 
 from database.connection import init_db, upgrade_schema, SessionLocal
-from database.repository import JobRepository
-from scraper.driver import create_driver
-from scraper.linkedin_scraper import LinkedInScraper
-from scraper.card_parser import parse_card
+from linked_job_scraper.database.repository import JobRepository
+from linked_job_scraper.scraper.driver import create_driver
+from linked_job_scraper.scraper.linkedin_scraper import LinkedInScraper
+from linked_job_scraper.scraper.card_parser import parse_card
 
-# Configure logging
 logger.remove()
 logger.add(sys.stderr, level="INFO", format="<green>{time:HH:mm:ss}</green> | <level>{level:<8}</level> | {message}")
 logger.add("logs/scraper.log", level="DEBUG", rotation="10 MB", retention="7 days")
 
 
 def _start_settings_watcher():
-    """Watch settings.py for changes and hot-reload config.settings on save.
-
-    All consumer modules import the module object (import config.settings as _cfg)
-    so after importlib.reload() their _cfg.X references automatically see new values.
-    """
-    import config.settings as _cfg_mod
+    """Watch LinkedIn settings.py for changes and hot-reload on save."""
+    import linked_job_scraper.config.settings as _cfg_mod
     settings_path = Path(_cfg_mod.__file__).resolve()
     last_mtime = settings_path.stat().st_mtime
 
@@ -38,7 +38,7 @@ def _start_settings_watcher():
                 if mtime != last_mtime:
                     last_mtime = mtime
                     importlib.reload(_cfg_mod)
-                    logger.info("⚙  settings.py changed — configuration reloaded live.")
+                    logger.info("settings.py changed — configuration reloaded live.")
             except Exception as e:
                 logger.warning(f"Settings watcher error: {e}")
 
@@ -50,18 +50,15 @@ def run_pipeline():
     _start_settings_watcher()
     logger.info("=== LinkedIn Job Scraper Pipeline Starting ===")
 
-    # 1. Initialize database
     logger.info("Initializing database...")
     init_db()
     upgrade_schema()
     session = SessionLocal()
     repo = JobRepository(session)
 
-    # 2. Initialize components
     import time
     driver = create_driver()
 
-    # ── Manual LinkedIn Login Step ──
     logger.info("Navigating to LinkedIn login page...")
     driver.get("https://www.linkedin.com/login")
     time.sleep(3)
@@ -76,7 +73,6 @@ def run_pipeline():
     print("=" * 60)
     input("\n>>> Press ENTER after you are logged in... ")
 
-    # Verify login worked
     time.sleep(2)
     current_url = driver.current_url
     if "feed" in current_url or "mynetwork" in current_url or "linkedin.com" in current_url:
@@ -90,18 +86,14 @@ def run_pipeline():
 
     scraper = LinkedInScraper(driver)
 
-    # Global counters (lifetime of the run)
     counts = {"inserted": 0, "duplicate": 0, "blocked": 0, "bad_title": 0, "error": 0}
     total_scraped = 0
-
-    # Per-keyword counters — reset after each keyword is logged
     kw_counts: dict[str, int] = {
         "scraped": 0, "inserted": 0, "duplicate": 0,
         "blocked": 0, "bad_title": 0, "error": 0,
     }
 
     def process_batch(cards: list[dict]):
-        """Parse and insert one page of cards immediately after it is scraped."""
         nonlocal total_scraped
         total_scraped += len(cards)
         kw_counts["scraped"] += len(cards)
@@ -119,16 +111,12 @@ def run_pipeline():
             kw_counts[result] += 1
 
     def on_keyword_done(keyword: str, _cards_scraped: int):
-        """Called once per search term after all its pages finish."""
         repo.log_keyword_done(keyword, kw_counts.copy())
-        # Reset for the next keyword
         for k in kw_counts:
             kw_counts[k] = 0
 
     try:
-        # 4. Scrape all skill keywords — cards are parsed + inserted in real-time,
-        #    and a summary row is written to scrape_log after each keyword finishes.
-        import config.settings as _cfg
+        import linked_job_scraper.config.settings as _cfg
         logger.info(f"Starting LinkedIn scrape | countries={_cfg.SEARCH_COUNTRIES} | "
                     f"max_applicants={_cfg.MAX_APPLICANTS} | pages_per_term={_cfg.MAX_PAGES_PER_SKILL}")
         scraper.scrape_all_skills(
@@ -149,11 +137,9 @@ def run_pipeline():
 
     except KeyboardInterrupt:
         logger.info("Pipeline interrupted by user.")
-
     except Exception as e:
         logger.error(f"Pipeline failed: {e}")
         raise
-
     finally:
         driver.quit()
         session.close()
@@ -161,11 +147,6 @@ def run_pipeline():
 
 
 def run_test(keyword: str = "Data Analyst", max_jobs: int = 5):
-    """
-    Test mode: scrape 1 page of one keyword, run LLM on first N jobs, insert into DB.
-    Usage: python main.py --test
-           python main.py --test --keyword "Data Engineer" --max 3
-    """
     import time
     import random
     _start_settings_watcher()
@@ -175,10 +156,8 @@ def run_test(keyword: str = "Data Analyst", max_jobs: int = 5):
     upgrade_schema()
     session = SessionLocal()
     repo = JobRepository(session)
-
     driver = create_driver()
 
-    # Login step
     driver.get("https://www.linkedin.com/login")
     time.sleep(3)
     print("\n" + "=" * 60)
@@ -189,8 +168,7 @@ def run_test(keyword: str = "Data Analyst", max_jobs: int = 5):
     scraper = LinkedInScraper(driver)
 
     try:
-        # Only 1 page, 1 keyword
-        from scraper.utils import build_search_url
+        from linked_job_scraper.scraper.utils import build_search_url
         url = build_search_url(keyword, start=0)
         cards = scraper._scrape_single_page(keyword, url, page_num=1)
 
@@ -200,22 +178,18 @@ def run_test(keyword: str = "Data Analyst", max_jobs: int = 5):
         for i, card in enumerate(cards, 1):
             logger.info(f"─── Job {i}/{len(cards)} ───────────────────────────")
             logger.info(f"Link: {card['link']}")
-
             try:
                 job = parse_card(html=card["html"], link=card["link"])
             except Exception as e:
                 logger.warning(f"  Parse error: {e} — skipping")
                 continue
-
             logger.info(f"  Title    : {job.title}")
             logger.info(f"  Company  : {job.company_name}")
             logger.info(f"  Location : {job.location}")
             logger.info(f"  Posted   : {job.posted_date}")
             logger.info(f"  Salary   : {job.salary}")
-
             job.description = card.get("description")
             logger.info(f"  Description: {len(job.description)} chars" if job.description else "  Description: None")
-
             result = repo.insert_job(job)
             logger.info(f"  DB result: {result}")
 
@@ -230,42 +204,21 @@ if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser(description="LinkedIn Job Scraper")
 
-    # Test mode
     parser.add_argument("--test", action="store_true", help="Run test mode (1 page, N jobs)")
     parser.add_argument("--keyword", default="Data Analyst", help="Keyword for test mode")
     parser.add_argument("--max", type=int, default=5, help="Max jobs in test mode")
-
-    # Scraper overrides (override .env / config/settings.py at runtime)
-    parser.add_argument(
-        "--countries",
-        type=str,
-        default=None,
-        help='Comma-separated LinkedIn location strings. E.g. "United States,United Kingdom". '
-             'Use "" for global (no filter).',
-    )
-    parser.add_argument(
-        "--max-applicants",
-        type=int,
-        default=None,
-        help="Skip jobs with >= this many applicants (0 = disabled). Default from .env.",
-    )
-    parser.add_argument(
-        "--pages",
-        type=int,
-        default=None,
-        help="Max pages to fetch per keyword per country (25 jobs/page). Default from .env.",
-    )
-    parser.add_argument(
-        "--skills",
-        type=str,
-        default=None,
-        help='Comma-separated skills to search. Replaces TARGET_SKILLS. E.g. "SQL,Python,dbt"',
-    )
+    parser.add_argument("--countries", type=str, default=None,
+                        help='Comma-separated LinkedIn location strings.')
+    parser.add_argument("--max-applicants", type=int, default=None,
+                        help="Skip jobs with >= this many applicants (0 = disabled).")
+    parser.add_argument("--pages", type=int, default=None,
+                        help="Max pages per keyword per country.")
+    parser.add_argument("--skills", type=str, default=None,
+                        help='Comma-separated skills to search. Replaces TARGET_SKILLS.')
 
     args = parser.parse_args()
 
-    # Apply runtime overrides before importing pipeline settings
-    import config.settings as _cfg
+    import linked_job_scraper.config.settings as _cfg
 
     if args.countries is not None:
         _cfg.SEARCH_COUNTRIES = (

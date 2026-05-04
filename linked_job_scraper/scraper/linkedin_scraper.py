@@ -10,7 +10,7 @@ from selenium.webdriver import ActionChains
 from selenium.webdriver.common.actions.wheel_input import ScrollOrigin
 from loguru import logger
 
-import config.settings as _cfg
+import linked_job_scraper.config.settings as _cfg
 from scraper.utils import build_search_url, random_sleep, scroll_page
 
 # Directory to save debug outputs

@@ -16,7 +16,8 @@ from loguru import logger
 from sqlalchemy import text
 
 from database.connection import SessionLocal
-from llm.ollama_client import OllamaClient
+from llm.factory import get_llm_client
+from llm.section_parser import _strip_html
 from llm.skill_extractor import SkillExtractor
 from storage.gcs_client import GCSClient
 
@@ -29,11 +30,15 @@ logger.add(
 
 
 def fetch_pending(session, batch: int, source: str | None) -> list:
+    # NOTE: skip rows whose description (a gs:// URI for most rows) contains '???'
+    # — these are scrape-time encoding casualties (em-dash mangled to '???' on
+    # Windows console), so the stored path can never resolve in GCS.
     if source:
         q = text("""
             SELECT id, title, company_name, description
             FROM jobsql
             WHERE description IS NOT NULL
+              AND description NOT LIKE '%??%'
               AND skills_extracted IS NULL
               AND source = :source
             ORDER BY id
@@ -45,6 +50,7 @@ def fetch_pending(session, batch: int, source: str | None) -> list:
             SELECT id, title, company_name, description
             FROM jobsql
             WHERE description IS NOT NULL
+              AND description NOT LIKE '%??%'
               AND skills_extracted IS NULL
             ORDER BY id
             LIMIT :batch
@@ -66,10 +72,10 @@ def run(batch: int, source: str | None, delay: float):
     logger.info("Connecting to GCS...")
     gcs = GCSClient()
 
-    logger.info("Checking Ollama...")
-    client = OllamaClient()
+    logger.info("Initializing LLM client...")
+    client = get_llm_client()
     if not client.is_available():
-        logger.error("Ollama is not running — start it with: ollama serve")
+        logger.error("LLM client not available — check provider config (LLM_PROVIDER, credentials)")
         session.close()
         return
 
@@ -93,29 +99,41 @@ def run(batch: int, source: str | None, delay: float):
                 counts["error"] += 1
                 logger.warning(f"  [{i}/{len(rows)}] Could not get description text — skipping")
                 continue
-            skills = extractor.extract(text_content, company_name=company)
+            text_content = _strip_html(text_content)
+            if not text_content.strip():
+                counts["error"] += 1
+                logger.warning(f"  [{i}/{len(rows)}] Empty after HTML strip — skipping")
+                continue
+            result = extractor.extract(text_content, company_name=company)
 
-            if skills is not None:
+            if result is not None:
+                req_skills = result["required_skills"]
+                years = result["experience_years"]
                 session.execute(
                     text("""
                         UPDATE jobsql
                         SET skills_extracted = :skills,
+                            experience_years = :years,
                             enriched_at      = :now
                         WHERE id = :id
                     """),
                     {
-                        "skills": json.dumps({"skills": skills}),
+                        "skills": json.dumps({"required_skills": req_skills}),
+                        "years": years,
                         "now": datetime.now(timezone.utc),
                         "id": job_id,
                     },
                 )
                 session.commit()
-                if skills:
+                if req_skills:
                     counts["ok"] += 1
-                    logger.info(f"  [{i}/{len(rows)}] Done → {len(skills)} skills: {skills[:5]}")
+                    logger.info(
+                        f"  [{i}/{len(rows)}] Done → {len(req_skills)} skills, "
+                        f"experience_years={years}: {req_skills[:5]}"
+                    )
                 else:
                     counts["empty"] += 1
-                    logger.info(f"  [{i}/{len(rows)}] Done → no technical skills in this job")
+                    logger.info(f"  [{i}/{len(rows)}] Done → no technical skills (experience_years={years})")
             else:
                 counts["error"] += 1
                 logger.warning(f"  [{i}/{len(rows)}] LLM returned unparseable response")

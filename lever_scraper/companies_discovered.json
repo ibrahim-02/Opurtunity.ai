@@ -1,0 +1,62 @@
+[
+  {
+    "name": "Veeva",
+    "slug": "veeva",
+    "jobs": 1059
+  },
+  {
+    "name": "Palantir",
+    "slug": "palantir",
+    "jobs": 235
+  },
+  {
+    "name": "Mistral",
+    "slug": "mistral",
+    "jobs": 159
+  },
+  {
+    "name": "Outreach",
+    "slug": "outreach",
+    "jobs": 30
+  },
+  {
+    "name": "Neon",
+    "slug": "neon",
+    "jobs": 15
+  },
+  {
+    "name": "Clari",
+    "slug": "clari",
+    "jobs": 6
+  },
+  {
+    "name": "Netflix",
+    "slug": "netflix",
+    "jobs": 0
+  },
+  {
+    "name": "Plaid",
+    "slug": "plaid",
+    "jobs": 0
+  },
+  {
+    "name": "Kraken",
+    "slug": "kraken",
+    "jobs": 0
+  },
+  {
+    "name": "Attentive",
+    "slug": "attentive",
+    "jobs": 0
+  },
+  {
+    "name": "Jetbrains",
+    "slug": "jetbrains",
+    "jobs": 0
+  },
+  {
+    "name": "Freshworks",
+    "slug": "freshworks",
+    "jobs": 0
+  }
+]

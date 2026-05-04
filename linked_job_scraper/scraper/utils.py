@@ -4,7 +4,7 @@ from urllib.parse import quote_plus
 
 from selenium.webdriver.remote.webdriver import WebDriver
 
-import config.settings as _cfg
+import linked_job_scraper.config.settings as _cfg
 
 
 def random_sleep(min_s: int = None, max_s: int = None):

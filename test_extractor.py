@@ -37,9 +37,15 @@ for i, row in enumerate(rows, 1):
         print(f"  → SKIPPED (no content)\n", flush=True)
         continue
     plain = _strip_html(content)
-    skills = extractor.extract(plain, company_name=row.company_name)
+    result = extractor.extract(plain, company_name=row.company_name)
     elapsed = time.time() - t0
-    print(f"  → {len(skills) if skills else 0} skills ({elapsed:.1f}s): {skills}\n", flush=True)
+    if result is None:
+        print(f"  → FAILED ({elapsed:.1f}s)\n", flush=True)
+    else:
+        skills = result["required_skills"]
+        years = result["experience_years"]
+        print(f"  → {len(skills)} skills, experience_years={years} ({elapsed:.1f}s)", flush=True)
+        print(f"    skills: {skills}\n", flush=True)
 
 session.close()
 client.close()

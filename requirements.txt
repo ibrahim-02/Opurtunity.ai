@@ -1,0 +1,43 @@
+# ── Web / HTTP ─────────────────────────────────────────────────────────────────
+fastapi==0.115.0
+uvicorn==0.30.0
+httpx>=0.28.1
+tenacity==9.0.0
+
+# ── Database ───────────────────────────────────────────────────────────────────
+sqlalchemy==2.0.36
+psycopg2-binary==2.9.10
+pgvector>=0.3.0
+alembic==1.13.3
+
+# ── Data / Validation ──────────────────────────────────────────────────────────
+pydantic==2.9.2
+python-dotenv==1.0.1
+
+# ── Scraping ───────────────────────────────────────────────────────────────────
+selenium==4.25.0
+undetected-chromedriver==3.5.5
+selenium-stealth==1.0.6
+beautifulsoup4==4.12.3
+lxml==5.3.0
+
+# ── Storage ────────────────────────────────────────────────────────────────────
+google-cloud-storage==2.18.2
+
+# ── Google AI (Vertex AI: Gemini + embeddings) ────────────────────────────────
+google-genai>=1.74.0
+
+# ── API extras ─────────────────────────────────────────────────────────────────
+slowapi==0.1.9
+pypdf==4.3.1
+python-multipart>=0.0.9
+
+# ── Cloud SQL connector (Cloud Run → Cloud SQL without IP whitelisting) ────────
+cloud-sql-python-connector[pg8000]==1.12.1
+pg8000==1.31.2
+
+# ── Additional scrapers ────────────────────────────────────────────────────────
+python-jobspy
+
+# ── Logging ────────────────────────────────────────────────────────────────────
+loguru==0.7.2

@@ -1,0 +1,86 @@
+version: '3.8'
+
+x-airflow-common: &airflow-common
+  build:
+    context: ..
+    dockerfile: airflow/Dockerfile
+  environment:
+    AIRFLOW__CORE__EXECUTOR: LocalExecutor
+    AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@airflow-db/airflow
+    AIRFLOW__CORE__FERNET_KEY: 'vBrMbXJYA4h3yY8J0C6X9K2L5P8Q1R4T7U0W3Z6A9B2='
+    AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: 'false'
+    AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
+    AIRFLOW__WEBSERVER__SECRET_KEY: 'job-scraper-secret-2026'
+    AIRFLOW__SCHEDULER__MIN_FILE_PROCESS_INTERVAL: '30'
+    PYTHONPATH: /app
+    # App config
+    LLM_PROVIDER: vertex
+    GCP_PROJECT_ID: wildfire-detection-486319
+    GCP_REGION: us-central1
+    VERTEX_GEN_MODEL: gemini-2.5-flash
+    VERTEX_EMBED_MODEL: gemini-embedding-001
+    EMBED_DIM: "768"
+    GCS_BUCKET_NAME: job-scraper-file
+    CLOUD_SQL_CONNECTION: wildfire-detection-486319:us-central1:job-scraper-db
+    DB_NAME: Linked_job_scrapping
+    DB_PORT: "5432"
+    GOOGLE_APPLICATION_CREDENTIALS: /app/gcp-key.json
+  env_file:
+    - ../.env
+  volumes:
+    - ./dags:/opt/airflow/dags
+    - ./logs:/opt/airflow/logs
+    - ..:/app
+  depends_on:
+    airflow-db:
+      condition: service_healthy
+
+services:
+  airflow-db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: airflow
+      POSTGRES_PASSWORD: airflow
+      POSTGRES_DB: airflow
+    volumes:
+      - airflow_db:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "airflow"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  airflow-init:
+    <<: *airflow-common
+    command: >
+      bash -c "
+        airflow db upgrade &&
+        airflow users create
+          --username admin
+          --password admin
+          --firstname Admin
+          --lastname User
+          --role Admin
+          --email admin@example.com || true
+      "
+    restart: "no"
+
+  airflow-webserver:
+    <<: *airflow-common
+    command: webserver
+    ports:
+      - "8080:8080"
+    restart: always
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  airflow-scheduler:
+    <<: *airflow-common
+    command: scheduler
+    restart: always
+
+volumes:
+  airflow_db:
