@@ -31,18 +31,21 @@ class JobResult(BaseModel):
     skill_overlap: float
     filter_score: float
     exp_score: float
+    explanation: str | None = None
+
+
+class FiltersUsed(BaseModel):
+    location: str | None = None
+    min_years: int | None = None
+    skills: list[str] = Field(default_factory=list)
+    max_hours_old: int | None = None
 
 
 class SearchResponse(BaseModel):
     results: list[JobResult]
     total: int
     query_used: str
-
-
-class ParseResumeResponse(BaseModel):
-    skills: list[str]
-    experience_years: int | None
-    summary: str
+    filters_used: FiltersUsed | None = None
 
 
 class PopularSkillsResponse(BaseModel):

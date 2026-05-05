@@ -6,7 +6,7 @@ Run locally:
 
 Endpoints:
     POST /api/search
-    POST /api/parse-resume
+    POST /api/match-resume
     GET  /api/skills/popular
     GET  /health
 """

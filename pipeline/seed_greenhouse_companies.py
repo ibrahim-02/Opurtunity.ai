@@ -156,7 +156,7 @@ def run():
     session.commit()
     session.close()
     logger.info(f"Seeded {added} new companies, {skipped} already existed")
-    logger.info("Run: python -m greenhouse_scraper.main --scrape")
+    logger.info("Run: python -m scrapers.greenhouse.main --scrape")
 
 
 if __name__ == "__main__":

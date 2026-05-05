@@ -74,3 +74,28 @@ def parse_resume_pdf(pdf_bytes: bytes, client) -> dict:
     except Exception as e:
         logger.error(f"PDF extraction failed: {e}")
         return {"skills": [], "experience_years": None, "summary": ""}
+
+
+def extract_resume_text(file_bytes: bytes, filename: str) -> str:
+    """
+    Extract raw text from a resume file (.pdf or .docx).
+    Returns the extracted text or empty string on failure.
+    """
+    name = filename.lower()
+    try:
+        if name.endswith(".pdf"):
+            from pypdf import PdfReader
+            reader = PdfReader(io.BytesIO(file_bytes))
+            return "\n".join(p.extract_text() or "" for p in reader.pages).strip()
+        if name.endswith(".docx"):
+            from docx import Document
+            doc = Document(io.BytesIO(file_bytes))
+            return "\n".join(p.text for p in doc.paragraphs if p.text.strip())
+        if name.endswith(".doc"):
+            raise ValueError(
+                "Legacy .doc format not supported — please save as .docx or .pdf"
+            )
+        raise ValueError(f"Unsupported file type: {filename}")
+    except Exception as e:
+        logger.error("Resume text extraction failed: {}", e)
+        raise

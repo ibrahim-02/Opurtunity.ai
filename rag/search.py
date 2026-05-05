@@ -163,10 +163,11 @@ def _filter_skill_score(
       - Only 1 of 2 → 0.5
       - None → 0.0
 
-    resume mode: threshold = ceil(50% of filter_skills), min 1
-      - score = min(matched / threshold, 1.0)
-      - Resume has 20 skills, threshold=10: matched 10+ → 1.0, matched 5 → 0.5
-      - Resume has 2 skills, threshold=1: matched 1+ → 1.0
+    resume mode: threshold = ceil(35% of the JOB's required skills), min 1
+      - Resumes typically list 30-40 skills, jobs list 5-15.
+      - If 35% of the job's skills are covered by the resume → score 1.0.
+      - Job needs [Python, AWS, Docker] (3), resume covers 1 → matched/1 = 1.0
+      - Job needs 10 skills, resume covers 2 → matched/4 = 0.5
     """
     if not filter_skills:
         return 1.0
@@ -176,7 +177,9 @@ def _filter_skill_score(
     if mode == "manual":
         return matched / len(filter_skills)
     else:  # resume
-        threshold = max(1, _math.ceil(len(filter_skills) * 0.5))
+        if not job_skills:
+            return 0.0
+        threshold = max(1, _math.ceil(len(job_skills) * 0.35))
         return min(matched / threshold, 1.0)
 
 
@@ -330,6 +333,110 @@ def display(results: list[dict]):
         print(f"    Score    : vec={job['vec_score']:.3f}  hybrid={job.get('hybrid_score', job['vec_score']):.3f}")
         print(f"    Link     : {job['link']}")
     print("=" * 70 + "\n")
+
+
+# ── LLM intent extraction ─────────────────────────────────────────────────────
+
+_INTENT_PROMPT = """Extract structured job search parameters from the user's natural language query.
+
+User query: "{query}"
+
+Return a JSON object with exactly these fields:
+{{
+  "query": "the core job role or position (e.g. 'Machine Learning Engineer', 'Data Analyst')",
+  "location": "location if mentioned, fully normalized (US → United States, NYC → New York) or null",
+  "min_years": years of experience as integer if mentioned, or null,
+  "skills": ["specific technical skills only, e.g. Python, AWS, TensorFlow"] or [],
+  "max_hours_old": hours as integer if a time window mentioned (24=today, 168=this week, 720=this month) or null
+}}
+
+Rules:
+- query: always return the job title/role only, no filler words
+- location: normalize abbreviations and typos (Unites States → United States)
+- min_years: extract from "3+ years", "senior" → 5, "junior" → 0, "entry level" → 0
+- skills: specific technologies only, not soft skills
+- max_hours_old: null if no time window mentioned — do NOT default to 24
+"""
+
+
+def parse_query_intent(client, raw_query: str) -> tuple[str, dict]:
+    """
+    Use Gemini to extract a clean job query + structured filters from natural language.
+    Returns (clean_query, filters_dict).
+    Falls back to (raw_query, {}) on any failure.
+    """
+    try:
+        prompt = _INTENT_PROMPT.format(query=raw_query.replace('"', "'"))
+        raw = client.generate(prompt)
+        import json as _json
+        import re as _re
+        raw = _re.sub(r"```(?:json)?|```", "", raw).strip()
+        parsed = _json.loads(raw)
+        clean_query = parsed.get("query") or raw_query
+        filters = {
+            "location":     parsed.get("location"),
+            "min_years":    parsed.get("min_years"),
+            "skills":       parsed.get("skills") or [],
+            "max_hours_old": parsed.get("max_hours_old"),
+        }
+        logger.info(
+            "Intent extracted: query='{}' location={} min_years={} skills={} max_hours_old={}",
+            clean_query, filters["location"], filters["min_years"],
+            filters["skills"], filters["max_hours_old"],
+        )
+        return clean_query, filters
+    except Exception as e:
+        logger.warning("Intent extraction failed ({}), using raw query.", e)
+        return raw_query, {}
+
+
+# ── Per-result explanation ────────────────────────────────────────────────────
+
+_EXPLAIN_PROMPT = """A job seeker is searching for: "{query}"
+
+Below are the top matching jobs. For each one, write a single short sentence (max 25 words) explaining why it matches the seeker's query. Mention specific skills, role, location, or experience that align — be concrete, not generic.
+
+Jobs:
+{jobs_json}
+
+Return ONLY a JSON object mapping job id (as string) to its explanation:
+{{
+  "12": "5+ years Python and AWS — direct fit for senior ML role in NYC.",
+  "47": "..."
+}}
+"""
+
+
+def explain_jobs(client, query: str, jobs: list[dict]) -> dict[int, str]:
+    """
+    Single Gemini call that returns a one-sentence "why it matches" per job.
+    Returns {job_id: explanation}. Falls back to {} on failure.
+    """
+    if not jobs:
+        return {}
+    try:
+        compact = [
+            {
+                "id": j["id"],
+                "title": j["title"],
+                "company": j.get("company"),
+                "location": j.get("location"),
+                "experience_years": j.get("experience_years"),
+                "skills": j.get("skills", [])[:12],
+            }
+            for j in jobs
+        ]
+        prompt = _EXPLAIN_PROMPT.format(
+            query=query.replace('"', "'"),
+            jobs_json=json.dumps(compact, indent=2),
+        )
+        raw = client.generate(prompt)
+        raw = re.sub(r"```(?:json)?|```", "", raw).strip()
+        parsed = json.loads(raw)
+        return {int(k): str(v) for k, v in parsed.items() if v}
+    except Exception as e:
+        logger.warning("Explanation pass failed ({}), returning no explanations.", e)
+        return {}
 
 
 # ── Public search function (used by API) ──────────────────────────────────────

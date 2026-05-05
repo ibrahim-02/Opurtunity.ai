@@ -103,3 +103,7 @@ airflow/dags/__pycache__/
 *.tmp
 *.orig
 *.rej
+
+# ── Local binaries & build artifacts ─────────────────────────────────────────
+cloud-sql-proxy.exe
+docker-build.log
