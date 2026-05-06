@@ -84,7 +84,7 @@ class BaseJobRepository:
         # sqlalchemy.exc.IntegrityError when unique constraint fires on flush().
         existing = self.session.query(JobSQL.id).filter(JobSQL.link == link).first()
         if existing:
-            logger.debug("Duplicate skipped: {}", link)
+            logger.info("  [duplicate] '{}' @ '{}'", title, company_name)
             return "duplicate"
 
         try:
@@ -127,7 +127,7 @@ class BaseJobRepository:
             self.session.rollback()
             err = str(e).lower()
             if "unique" in err or "duplicate key" in err or "23505" in err:
-                logger.debug("Duplicate skipped (race): {}", link)
+                logger.info("  [duplicate] '{}' @ '{}' (race)", title, company_name)
                 return "duplicate"
             logger.error("Insert error for '{}': {}", title, e)
             return "error"
