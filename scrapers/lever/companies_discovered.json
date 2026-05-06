@@ -1,0 +1,557 @@
+[
+  {
+    "name": "Veeva",
+    "slug": "veeva",
+    "jobs": 1055
+  },
+  {
+    "name": "Gopuff",
+    "slug": "gopuff",
+    "jobs": 765
+  },
+  {
+    "name": "Sila",
+    "slug": "sila",
+    "jobs": 251
+  },
+  {
+    "name": "Zoox",
+    "slug": "zoox",
+    "jobs": 214
+  },
+  {
+    "name": "Spotify",
+    "slug": "spotify",
+    "jobs": 193
+  },
+  {
+    "name": "Mistral",
+    "slug": "mistral",
+    "jobs": 158
+  },
+  {
+    "name": "Ion",
+    "slug": "ion",
+    "jobs": 155
+  },
+  {
+    "name": "Distro",
+    "slug": "distro",
+    "jobs": 145
+  },
+  {
+    "name": "Tractian",
+    "slug": "tractian",
+    "jobs": 129
+  },
+  {
+    "name": "Aleph",
+    "slug": "aleph",
+    "jobs": 92
+  },
+  {
+    "name": "Hive",
+    "slug": "hive",
+    "jobs": 75
+  },
+  {
+    "name": "Ro",
+    "slug": "ro",
+    "jobs": 47
+  },
+  {
+    "name": "Meesho",
+    "slug": "meesho",
+    "jobs": 46
+  },
+  {
+    "name": "Emburse",
+    "slug": "emburse",
+    "jobs": 44
+  },
+  {
+    "name": "Captivateiq",
+    "slug": "captivateiq",
+    "jobs": 35
+  },
+  {
+    "name": "Canarytechnologies",
+    "slug": "canarytechnologies",
+    "jobs": 34
+  },
+  {
+    "name": "Voodoo",
+    "slug": "voodoo",
+    "jobs": 34
+  },
+  {
+    "name": "Porter",
+    "slug": "porter",
+    "jobs": 32
+  },
+  {
+    "name": "Netomi",
+    "slug": "netomi",
+    "jobs": 32
+  },
+  {
+    "name": "Outreach",
+    "slug": "outreach",
+    "jobs": 30
+  },
+  {
+    "name": "Intersect",
+    "slug": "intersect",
+    "jobs": 29
+  },
+  {
+    "name": "Gridware",
+    "slug": "gridware",
+    "jobs": 28
+  },
+  {
+    "name": "Snappr",
+    "slug": "snappr",
+    "jobs": 26
+  },
+  {
+    "name": "Skyways",
+    "slug": "skyways",
+    "jobs": 22
+  },
+  {
+    "name": "Superside",
+    "slug": "superside",
+    "jobs": 22
+  },
+  {
+    "name": "Layup",
+    "slug": "layup",
+    "jobs": 20
+  },
+  {
+    "name": "Fampay",
+    "slug": "fampay",
+    "jobs": 20
+  },
+  {
+    "name": "Mashgin",
+    "slug": "mashgin",
+    "jobs": 20
+  },
+  {
+    "name": "Tendo",
+    "slug": "tendo",
+    "jobs": 19
+  },
+  {
+    "name": "Revel",
+    "slug": "revel",
+    "jobs": 18
+  },
+  {
+    "name": "Glide",
+    "slug": "glide",
+    "jobs": 17
+  },
+  {
+    "name": "Nimblerx",
+    "slug": "nimblerx",
+    "jobs": 17
+  },
+  {
+    "name": "Proper",
+    "slug": "proper",
+    "jobs": 16
+  },
+  {
+    "name": "Mable",
+    "slug": "mable",
+    "jobs": 16
+  },
+  {
+    "name": "Zeta",
+    "slug": "zeta",
+    "jobs": 16
+  },
+  {
+    "name": "Rigetti",
+    "slug": "rigetti",
+    "jobs": 16
+  },
+  {
+    "name": "Neon",
+    "slug": "neon",
+    "jobs": 15
+  },
+  {
+    "name": "Constellation",
+    "slug": "constellation",
+    "jobs": 15
+  },
+  {
+    "name": "Super",
+    "slug": "super",
+    "jobs": 14
+  },
+  {
+    "name": "Pyka",
+    "slug": "pyka",
+    "jobs": 14
+  },
+  {
+    "name": "Vida",
+    "slug": "vida",
+    "jobs": 14
+  },
+  {
+    "name": "Multiplylabs",
+    "slug": "multiplylabs",
+    "jobs": 14
+  },
+  {
+    "name": "Prosper",
+    "slug": "prosper",
+    "jobs": 13
+  },
+  {
+    "name": "Handoff",
+    "slug": "handoff",
+    "jobs": 13
+  },
+  {
+    "name": "Synapticure",
+    "slug": "synapticure",
+    "jobs": 12
+  },
+  {
+    "name": "Tovala",
+    "slug": "tovala",
+    "jobs": 12
+  },
+  {
+    "name": "Bloom",
+    "slug": "bloom",
+    "jobs": 11
+  },
+  {
+    "name": "Doola",
+    "slug": "doola",
+    "jobs": 11
+  },
+  {
+    "name": "Teleo",
+    "slug": "teleo",
+    "jobs": 11
+  },
+  {
+    "name": "H1",
+    "slug": "h1",
+    "jobs": 11
+  },
+  {
+    "name": "Hush",
+    "slug": "hush",
+    "jobs": 11
+  },
+  {
+    "name": "Emilabs",
+    "slug": "emilabs",
+    "jobs": 10
+  },
+  {
+    "name": "Unusual",
+    "slug": "unusual",
+    "jobs": 9
+  },
+  {
+    "name": "Unify",
+    "slug": "unify",
+    "jobs": 9
+  },
+  {
+    "name": "Suger",
+    "slug": "suger",
+    "jobs": 9
+  },
+  {
+    "name": "Fleetzero",
+    "slug": "fleetzero",
+    "jobs": 9
+  },
+  {
+    "name": "Duffel",
+    "slug": "duffel",
+    "jobs": 9
+  },
+  {
+    "name": "Revi",
+    "slug": "revi",
+    "jobs": 8
+  },
+  {
+    "name": "Alloy",
+    "slug": "alloy",
+    "jobs": 8
+  },
+  {
+    "name": "Finch",
+    "slug": "finch",
+    "jobs": 8
+  },
+  {
+    "name": "Voltalabs",
+    "slug": "voltalabs",
+    "jobs": 8
+  },
+  {
+    "name": "Theathletic",
+    "slug": "theathletic",
+    "jobs": 8
+  },
+  {
+    "name": "Plume",
+    "slug": "plume",
+    "jobs": 7
+  },
+  {
+    "name": "Maverickx",
+    "slug": "maverickx",
+    "jobs": 7
+  },
+  {
+    "name": "Enable",
+    "slug": "enable",
+    "jobs": 7
+  },
+  {
+    "name": "Verifiable",
+    "slug": "verifiable",
+    "jobs": 7
+  },
+  {
+    "name": "Zippi",
+    "slug": "zippi",
+    "jobs": 7
+  },
+  {
+    "name": "Mytos",
+    "slug": "mytos",
+    "jobs": 7
+  },
+  {
+    "name": "Plexus",
+    "slug": "plexus",
+    "jobs": 7
+  },
+  {
+    "name": "People Ai",
+    "slug": "people-ai",
+    "jobs": 7
+  },
+  {
+    "name": "Copia",
+    "slug": "copia",
+    "jobs": 7
+  },
+  {
+    "name": "Caremessage",
+    "slug": "caremessage",
+    "jobs": 7
+  },
+  {
+    "name": "Skio",
+    "slug": "skio",
+    "jobs": 6
+  },
+  {
+    "name": "Maya",
+    "slug": "maya",
+    "jobs": 5
+  },
+  {
+    "name": "Clari",
+    "slug": "clari",
+    "jobs": 4
+  },
+  {
+    "name": "Trellis",
+    "slug": "trellis",
+    "jobs": 4
+  },
+  {
+    "name": "Glass Health Inc",
+    "slug": "glass-health-inc",
+    "jobs": 4
+  },
+  {
+    "name": "Twodots",
+    "slug": "twodots",
+    "jobs": 4
+  },
+  {
+    "name": "Eternal",
+    "slug": "eternal",
+    "jobs": 4
+  },
+  {
+    "name": "Starkbank",
+    "slug": "starkbank",
+    "jobs": 4
+  },
+  {
+    "name": "Evry Health",
+    "slug": "evry-health",
+    "jobs": 4
+  },
+  {
+    "name": "Blue",
+    "slug": "blue",
+    "jobs": 3
+  },
+  {
+    "name": "Willowinc",
+    "slug": "willowinc",
+    "jobs": 3
+  },
+  {
+    "name": "Newton",
+    "slug": "newton",
+    "jobs": 3
+  },
+  {
+    "name": "Relay",
+    "slug": "relay",
+    "jobs": 3
+  },
+  {
+    "name": "Epsilon3",
+    "slug": "epsilon3",
+    "jobs": 3
+  },
+  {
+    "name": "Bolster",
+    "slug": "bolster",
+    "jobs": 3
+  },
+  {
+    "name": "Fintual",
+    "slug": "fintual",
+    "jobs": 3
+  },
+  {
+    "name": "Thunkable",
+    "slug": "thunkable",
+    "jobs": 3
+  },
+  {
+    "name": "Autonomous",
+    "slug": "autonomous",
+    "jobs": 2
+  },
+  {
+    "name": "Jupe",
+    "slug": "jupe",
+    "jobs": 2
+  },
+  {
+    "name": "Tag",
+    "slug": "tag",
+    "jobs": 2
+  },
+  {
+    "name": "Toku",
+    "slug": "toku",
+    "jobs": 2
+  },
+  {
+    "name": "Smartcuts",
+    "slug": "smartcuts",
+    "jobs": 2
+  },
+  {
+    "name": "Marcopolo",
+    "slug": "marcopolo",
+    "jobs": 2
+  },
+  {
+    "name": "Nimbus",
+    "slug": "nimbus",
+    "jobs": 2
+  },
+  {
+    "name": "Postera",
+    "slug": "postera",
+    "jobs": 2
+  },
+  {
+    "name": "Livingcarbon",
+    "slug": "livingcarbon",
+    "jobs": 2
+  },
+  {
+    "name": "Proof",
+    "slug": "proof",
+    "jobs": 2
+  },
+  {
+    "name": "Vergesense",
+    "slug": "vergesense",
+    "jobs": 2
+  },
+  {
+    "name": "Picktrace",
+    "slug": "picktrace",
+    "jobs": 2
+  },
+  {
+    "name": "Marqvision",
+    "slug": "marqvision",
+    "jobs": 1
+  },
+  {
+    "name": "Kinter",
+    "slug": "kinter",
+    "jobs": 1
+  },
+  {
+    "name": "Shiru",
+    "slug": "shiru",
+    "jobs": 1
+  },
+  {
+    "name": "Sapling",
+    "slug": "sapling",
+    "jobs": 1
+  },
+  {
+    "name": "Jitxinc",
+    "slug": "jitxinc",
+    "jobs": 1
+  },
+  {
+    "name": "Culdesac",
+    "slug": "culdesac",
+    "jobs": 1
+  },
+  {
+    "name": "Ledger",
+    "slug": "ledger",
+    "jobs": 1
+  },
+  {
+    "name": "Tesorio",
+    "slug": "tesorio",
+    "jobs": 1
+  },
+  {
+    "name": "Plivo",
+    "slug": "plivo",
+    "jobs": 1
+  },
+  {
+    "name": "Quartzy",
+    "slug": "quartzy",
+    "jobs": 1
+  }
+]
