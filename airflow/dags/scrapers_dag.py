@@ -1,8 +1,12 @@
 """
 Scrapers DAG: greenhouse_scrape + lever_scrape (parallel).
-Runs every 4 hours. New jobs are picked up by the job_pipeline DAG (enrich/embed)
+Runs every 12 hours. New jobs are picked up by the job_pipeline DAG (enrich/embed)
 on its next 30-minute tick.
 """
+import sys, os
+if "/app" not in sys.path:
+    sys.path.insert(0, "/app")
+
 from datetime import datetime, timedelta
 
 from airflow import DAG
@@ -29,7 +33,7 @@ def run_lever():
 with DAG(
     dag_id="scrapers_pipeline",
     default_args=default_args,
-    schedule_interval="0 */4 * * *",
+    schedule_interval="0 */12 * * *",
     start_date=datetime(2026, 5, 1),
     catchup=False,
     max_active_runs=1,

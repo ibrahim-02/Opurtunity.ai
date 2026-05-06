@@ -1,7 +1,11 @@
 """
-Job pipeline DAG: enrich_jobs → embed_jobs
-Runs every 30 minutes. embed only starts after enrich completes successfully.
+Job pipeline DAG: enrich_jobs → embed_jobs → tailor_resumes
+Runs every 30 minutes. Each task only runs after the previous succeeds.
 """
+import sys, os
+if "/app" not in sys.path:
+    sys.path.insert(0, "/app")
+
 from datetime import datetime, timedelta
 
 from airflow import DAG
@@ -25,6 +29,11 @@ def run_embed():
     run(batch=500, source=None, delay=0.05)
 
 
+def run_tailor():
+    from pipeline.tailor_resumes import run
+    run(batch=50, delay=0.5)
+
+
 with DAG(
     dag_id="job_pipeline",
     default_args=default_args,
@@ -45,4 +54,9 @@ with DAG(
         python_callable=run_embed,
     )
 
-    enrich_task >> embed_task
+    tailor_task = PythonOperator(
+        task_id="tailor_resumes",
+        python_callable=run_tailor,
+    )
+
+    enrich_task >> embed_task >> tailor_task
