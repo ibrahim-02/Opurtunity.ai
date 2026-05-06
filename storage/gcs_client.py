@@ -1,3 +1,4 @@
+import hashlib
 import re
 
 from google.cloud import storage
@@ -14,8 +15,10 @@ def _sanitize(name: str) -> str:
     return name[:100]
 
 
-def _description_path(company: str, title: str, job_id: int) -> str:
-    return f"descriptions/{_sanitize(company)}/{_sanitize(title)}_{job_id}.txt"
+def _description_path(company: str, title: str, job_id) -> str:
+    # job_id may be an int (legacy) or a URL string — hash it for a stable short key
+    key = hashlib.sha1(str(job_id).encode()).hexdigest()[:12] if job_id else "x"
+    return f"descriptions/{_sanitize(company)}/{_sanitize(title)}_{key}.txt"
 
 
 def _chunk_path(company: str, title: str, job_id: int, chunk_index: int) -> str:
@@ -44,6 +47,33 @@ class GCSClient:
         uri = f"gs://{_cfg.GCS_BUCKET_NAME}/{path}"
         logger.debug(f"Uploaded chunk → {uri}")
         return uri
+
+    def upload_resume(self, job_id: int, pdf_bytes: bytes) -> str:
+        """Upload a tailored resume PDF for a job. Returns the gs:// URI."""
+        path = f"tailored_resumes/{job_id}.pdf"
+        blob = self._bucket.blob(path)
+        blob.upload_from_string(pdf_bytes, content_type="application/pdf")
+        uri = f"gs://{_cfg.GCS_BUCKET_NAME}/{path}"
+        logger.debug(f"Uploaded resume → {uri}")
+        return uri
+
+    def upload_resume_txt(self, job_id: int, txt: str) -> str:
+        """Upload a plain-text mirror of the tailored resume (ATS fallback)."""
+        path = f"tailored_resumes/{job_id}.txt"
+        blob = self._bucket.blob(path)
+        blob.upload_from_string(txt, content_type="text/plain; charset=utf-8")
+        return f"gs://{_cfg.GCS_BUCKET_NAME}/{path}"
+
+    def download_base_resume(self) -> str | None:
+        """Download the user's base resume markdown from gs://<bucket>/base_resume.md."""
+        try:
+            blob = self._bucket.blob("base_resume.md")
+            if not blob.exists():
+                return None
+            return blob.download_as_text(encoding="utf-8")
+        except Exception as e:
+            logger.error(f"Could not download base resume: {e}")
+            return None
 
     def download_description(self, uri: str) -> str | None:
         """Download description text from a gs:// URI."""

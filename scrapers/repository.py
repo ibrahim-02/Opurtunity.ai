@@ -80,49 +80,34 @@ class BaseJobRepository:
             logger.info("  [non_us]    '{}' @ '{}' ({})", title, company_name, location)
             return "non_us"
 
+        # Pre-check avoids exception mismatch between pg8000 DatabaseError and
+        # sqlalchemy.exc.IntegrityError when unique constraint fires on flush().
+        existing = self.session.query(JobSQL.id).filter(JobSQL.link == link).first()
+        if existing:
+            logger.debug("Duplicate skipped: {}", link)
+            return "duplicate"
+
         try:
             gcs = _get_gcs()
+            description_to_store = description
+            gcs_uri = None
+
             if gcs and description:
                 try:
-                    orm = JobSQL(
-                        company_name=company_name,
-                        title=title,
-                        description=None,
-                        link=link,
-                        location=location,
-                        posted_date=posted_date or datetime.now(timezone.utc),
-                        salary=salary,
-                        source=src,
-                    )
-                    self.session.add(orm)
-                    self.session.flush()
                     gcs_uri = gcs.upload_description(
                         company_name or "unknown",
                         title,
-                        orm.id,
+                        link,   # used as unique key in GCS path
                         description,
                     )
-                    orm.description = gcs_uri
-                    self.session.commit()
-                    logger.info("Inserted: '{}' @ '{}' → {}", title, company_name, gcs_uri)
-                    return "inserted"
-                except IntegrityError as e:
-                    self.session.rollback()
-                    orig = str(e.orig).lower()
-                    if "unique" in orig or "duplicate key" in orig:
-                        logger.debug("Duplicate skipped: {}", link)
-                        return "duplicate"
-                    logger.error("Insert error for '{}': {}", title, e.orig)
-                    return "error"
+                    description_to_store = gcs_uri
                 except Exception as e:
-                    self.session.rollback()
                     logger.warning("GCS upload failed, storing inline: {}", e)
 
-            # Inline fallback
             orm = JobSQL(
                 company_name=company_name,
                 title=title,
-                description=description,
+                description=description_to_store,
                 link=link,
                 location=location,
                 posted_date=posted_date or datetime.now(timezone.utc),
@@ -131,16 +116,20 @@ class BaseJobRepository:
             )
             self.session.add(orm)
             self.session.commit()
-            logger.info("Inserted: '{}' @ '{}'", title, company_name)
+
+            if gcs_uri:
+                logger.info("Inserted: '{}' @ '{}' → {}", title, company_name, gcs_uri)
+            else:
+                logger.info("Inserted: '{}' @ '{}'", title, company_name)
             return "inserted"
 
-        except IntegrityError as e:
+        except Exception as e:
             self.session.rollback()
-            orig = str(e.orig).lower()
-            if "unique" in orig or "duplicate key" in orig:
-                logger.debug("Duplicate skipped: {}", link)
+            err = str(e).lower()
+            if "unique" in err or "duplicate key" in err or "23505" in err:
+                logger.debug("Duplicate skipped (race): {}", link)
                 return "duplicate"
-            logger.error("Insert error for '{}': {}", title, e.orig)
+            logger.error("Insert error for '{}': {}", title, e)
             return "error"
 
     def existing_links(self) -> set[str]:
