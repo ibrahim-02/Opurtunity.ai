@@ -23,6 +23,7 @@ class JobSQL(Base):
     enriched_at = Column(TIMESTAMP, nullable=True)
     embedding = Column(Vector(768), nullable=True)
     added_at = Column(Integer, server_default=func.cast(func.extract("epoch", func.now()) / 3600, Integer), nullable=False)
+    tailored_resume_uri = Column(String, nullable=True)
 
     __table_args__ = (
         Index("idx_jobsql_link", "link"),
@@ -63,6 +64,21 @@ class GreenhouseCompany(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     company_name = Column(String)
     slug = Column(String, unique=True)
+    job_count = Column(Integer, default=0)
+    last_scraped = Column(TIMESTAMP)
+    active = Column(Boolean, default=True)
+    discovered_at = Column(TIMESTAMP, server_default=func.now())
+
+
+class WorkdayCompany(Base):
+    """Cache of companies confirmed to have a Workday jobs board."""
+    __tablename__ = "workday_companies"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    company_name = Column(String)
+    tenant = Column(String, unique=True)   # subdomain slug, e.g. "salesforce"
+    wd_num = Column(Integer)               # server number 1–5
+    career_site = Column(String)           # path segment, e.g. "External_Careers"
     job_count = Column(Integer, default=0)
     last_scraped = Column(TIMESTAMP)
     active = Column(Boolean, default=True)

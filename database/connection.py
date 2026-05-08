@@ -57,6 +57,18 @@ def upgrade_schema():
         "ALTER TABLE jobsql ADD COLUMN IF NOT EXISTS embedding vector(768)",
         "CREATE INDEX IF NOT EXISTS idx_jobsql_embedding ON jobsql USING hnsw (embedding vector_cosine_ops)",
         "ALTER TABLE jobsql ADD COLUMN IF NOT EXISTS added_at INTEGER DEFAULT (EXTRACT(EPOCH FROM NOW()) / 3600)::INTEGER",
+        "ALTER TABLE jobsql ADD COLUMN IF NOT EXISTS tailored_resume_uri VARCHAR",
+        """CREATE TABLE IF NOT EXISTS workday_companies (
+            id SERIAL PRIMARY KEY,
+            company_name VARCHAR,
+            tenant VARCHAR UNIQUE,
+            wd_num INTEGER,
+            career_site VARCHAR,
+            job_count INTEGER DEFAULT 0,
+            last_scraped TIMESTAMP,
+            active BOOLEAN DEFAULT TRUE,
+            discovered_at TIMESTAMP DEFAULT NOW()
+        )""",
     ]
     with engine.begin() as conn:
         for stmt in stmts:
