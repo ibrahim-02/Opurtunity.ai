@@ -13,7 +13,8 @@ WD_NUMS = [1, 2, 3, 4, 5]
 
 CONCURRENCY = int(os.getenv("WD_CONCURRENCY", "25"))
 REQUEST_DELAY = float(os.getenv("WD_REQUEST_DELAY", "0.5"))
-REQUEST_TIMEOUT = float(os.getenv("WD_REQUEST_TIMEOUT", "5.0"))
+REQUEST_TIMEOUT = float(os.getenv("WD_REQUEST_TIMEOUT", "8.0"))
+CONNECT_TIMEOUT = float(os.getenv("WD_CONNECT_TIMEOUT", "3.0"))
 
 JOBS_PER_PAGE = 20
 MAX_PAGES = 50           # hard cap: 1000 jobs per company

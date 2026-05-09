@@ -104,8 +104,12 @@ async def _check_combo(
 
         # Fast path: GET → redirect → extract career_site
         try:
+            timeout = httpx.Timeout(
+                connect=_cfg.CONNECT_TIMEOUT, read=_cfg.REQUEST_TIMEOUT,
+                write=5.0, pool=5.0,
+            )
             r = await client.get(
-                base, timeout=_cfg.REQUEST_TIMEOUT,
+                base, timeout=timeout,
                 headers=_cfg._HEADERS, follow_redirects=True,
             )
             if r.status_code == 200:
