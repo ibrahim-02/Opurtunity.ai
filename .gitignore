@@ -122,3 +122,6 @@ linked_job_scraper/
 frontend/node_modules/
 frontend/.next/
 frontend/tsconfig.tsbuildinfo
+
+# One-time migration/seed scripts — run locally, not part of the app
+one_time_scripts/
