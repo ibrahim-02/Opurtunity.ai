@@ -107,3 +107,18 @@ airflow/dags/__pycache__/
 # ── Local binaries & build artifacts ─────────────────────────────────────────
 cloud-sql-proxy.exe
 docker-build.log
+
+# ── Custom virtual envs ───────────────────────────────────────────────────────
+venv311/
+
+# ── Claude Code internals ─────────────────────────────────────────────────────
+.claude/
+
+# ── Scratch / staging areas ───────────────────────────────────────────────────
+linked_job_scraper/
+
+
+# ── Frontend build artifacts ──────────────────────────────────────────────────
+frontend/node_modules/
+frontend/.next/
+frontend/tsconfig.tsbuildinfo
