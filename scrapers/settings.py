@@ -10,32 +10,29 @@ Per-scraper settings (URLs, delays, search queries) live in scrapers/<name>/sett
 TITLE_KEYWORDS = [
     "analyst", "scientist", "developer", "architect",
     "mlops", "devops", "dataops", "machine learning", "data", "bi ",
-    " bi", "business intelligence", "analytics", "etl", "sql",
+     "business intelligence", "analytics", "etl","sql",
     "python", "cloud", "database", "pipeline", " ai ", "artificial intelligence",
-    "llm", "nlp", "rag", "generative", "quantitative", "research scientist",
-    "Software Engineer", "platform", "big data", "deep learning", "modeling",
-    "visualization", "reporting", "tableau", "looker", "spark", "hadoop",
-    "databricks", "snowflake", "dbt",
+    "llm", "nlp", "rag", "generative",  "Software Engineer", "platform", "big data", "deep learning",
+    "visualization", "reporting", "spark", "hadoop",
+    "databricks", "snowflake", "dbt","Information Technology","DevSecOps"
 ]
 
 # ── Title hard-exclude (rejected even if it matches the allowlist) ───────────
 TITLE_EXCLUDE_KEYWORDS = [
     "mechanical engineer", "mechanical engineering",
     "electrical engineer", "electrical engineering",
-    "principal", "director", "staff ", "head of", " head,",
-    "senior manager",
-    "data entry",
+    "data entry"
 ]
 
 # ── Company blocklist (staffing agencies, job boards, ATS providers) ─────────
 EXCLUDED_COMPANIES = {
-    "DataAnnotation", "Jobs Ai", "dice", "remote hunter", "jobright", "jobright.ai", "joveo AI", "Sundayy",
-    "carvana",
+    "Mercor","FetchJobs.co","DataAnnotation","Why Hiring","Quik Hire Staffing","6% Não Basta","Jobs Ai", "dice", "remote hunter", "jobright", "jobright.ai", "joveo AI", "Sundayy",
+    "carvana","Manha Tech Solutions LLC","Georgia IT, Inc"
     "Joveo Ai", "jobs via equest", "lensa", "talent.com", "adzuna", "jooble",
-    "zippia", "nexxt", "jobcase", "talentify", "jobot", "hired",
+    "zippia","Tech Consulting", "nexxt", "jobcase", "talentify", "jobot", "hired",
     "jobs via jobright", "recruit.net", "resume-library", "jora",
     "fetch recruit", "built in", "glassdoor", "indeed", "ziprecruiter",
-    "snagajob", "careerbuilder", "monster", "simplyhired", "the ladders",
+    "snagajob","Inside Higher Ed", "careerbuilder", "monster", "simplyhired", "the ladders",
     "the muse", "wellfound", "lever", "greenhouse", "smartrecruiters",
     "breezy hr", "jobvite", "workable", "betterteam", "jobscore",
     "recruitee", "teamtailor", "pinpoint", "freshteam", "zoho recruit",
@@ -69,7 +66,21 @@ US_STATE_CODES = {
 
 US_KEYWORDS = (
     "united states", "usa", "u.s.a", "u.s.", " us ",
-    "remote - us", "remote (us)", "remote, us", "us remote",
+    "remote - us", "remote (us)", "remote, us", "us remote","Dublin"
+    # Major US metros — LinkedIn often uses "{City} Area" format with no state code
+    "new york", "manhattan", "brooklyn", "bronx", "queens",
+    "los angeles", "san francisco", "bay area", "silicon valley", "san jose",
+    "seattle", "chicago", "boston", "austin", "dallas", "houston",
+    "atlanta", "denver", "phoenix", "philadelphia", "san diego",
+    "portland", "minneapolis", "detroit", "charlotte", "nashville",
+    "washington, d", "dc metro", "baltimore", "raleigh", "durham",
+    "miami", "fort lauderdale", "orlando", "tampa", "jacksonville",
+    "las vegas", "salt lake", "sacramento", "san antonio", "columbus",
+    "cleveland", "pittsburgh", "richmond", "memphis", "new orleans",
+    "hartford", "buffalo", "rochester", "albany", "omaha", "tulsa",
+    "louisville", "indianapolis", "cincinnati", "kansas city", "st. louis",
+    "milwaukee", "madison", "des moines", "boise", "spokane", "tucson",
+    "albuquerque", "el paso", "oklahoma city", "little rock","springfield", "worcester", "providence", "syracuse", "allentown", "erie", "lancaster", "york", "harrisburg", "reading", "scranton", "pennsylvania", "penn", "rhode island", "rhode island", "vermont", "vermont", "maine", "maine", "new hampshire", "new hampshire",
 )
 
 NON_US_KEYWORDS = (
@@ -79,7 +90,7 @@ NON_US_KEYWORDS = (
     "paris", "lyon", "france",
     "amsterdam", "rotterdam", "netherlands", "holland",
     "madrid", "barcelona", "spain",
-    "rome", "milan", "italy",
+    "rome", "milan", "italy","india","delhi","bangalore","mumbai","hyderabad","pune","chennai",
     "stockholm", "sweden", "oslo", "norway", "copenhagen", "denmark",
     "helsinki", "finland", "warsaw", "poland", "prague", "czech",
     "lisbon", "portugal", "zurich", "switzerland", "vienna", "austria",

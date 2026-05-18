@@ -1,0 +1,130 @@
+{
+  "name": "Mohammed Ibrahim",
+    "education": [
+    {
+      "school": "Northeastern University",
+      "degree": "Master of Science in Data Analytic Engineering",
+      "location": "Boston, MA",
+      "dates": "Sep 2024 - Dec 2026",
+      "gpa": "3.8/4.0",
+      "coursework": "Data Management for Analytics, Data Mining, Data Warehousing, Storytelling with Data",
+      "certifications": "Data Warehousing in Snowflake"
+    },
+    {
+      "school": "CVR College of Engineering",
+      "degree": "Bachelor of Engineering in Computer Science",
+      "location": "Hyderabad, India",
+      "dates": "Sep 2020 - Apr 2024",
+      "gpa": "8.0/10.0",
+      "coursework": "Management Science, Financial Analysis, Web Services and Cloud Computing, Web Engineering",
+      "certifications": "Salesforce for Developer"
+    }
+  ],
+  "contact": {
+    "email": "mohammedibbu647@gmail.com",
+    "phone": "(617) 652-6972",
+    "location": "Boston, MA | Open to Relocate",
+    "linkedin": "linkedin.com/in/mohammed-ibrahim-a37567229",
+    "github": "github.com/ibrahim-02"
+  },
+  "summary": "Data Engineer and AI/ML practitioner with 3+ years of experience building production data pipelines, LLM-powered applications, and full-stack platforms. Architected financial analytics ETL systems on AWS processing 2M+ records, built RAG retrieval pipelines using Gemini 2.5 Flash and OpenAI, and delivered end-to-end ML platforms from training to GCP deployment. Pursuing MS in Data Analytic Engineering at Northeastern University (GPA 3.8/4.0).",
+  "skills": [
+    "Python", "SQL", "JavaScript", "Node.js",
+    "FastAPI", "React", "Next.js", "Tailwind CSS",
+    "Apache Airflow", "ETL", "ELT", "SCD Type 2", "Data Warehousing",
+    "PostgreSQL", "AWS RDS", "Snowflake", "pgvector", "HNSW Indexing",
+    "AWS EC2", "GCP", "Cloud Run", "Cloud Functions", "Google Cloud Storage",
+    "Vertex AI", "Cloud Scheduler",
+    "Docker", "GitHub Actions", "DVC", "nginx", "ELK Stack",
+    "OpenAI GPT-4", "Gemini 2.5 Flash", "DeepSeek", "RAG",
+    "LLM Orchestration", "OpenAI Embeddings", "Vertex AI Embeddings",
+    "XGBoost", "Scikit-learn", "SHAP", "Fairlearn",
+    "Pandas", "NumPy", "matplotlib", "seaborn",
+    "Schema Design", "Query Optimization", "Monte Carlo Simulation"
+  ],
+  "experience": [
+    {
+      "company": "Checkit Analytics",
+      "title": "Data Engineer",
+      "dates": "Jan 2026 - Present",
+      "location": "San Diego, CA (Remote)",
+      "bullets": [
+        "Architected end-to-end financial analytics data platform on AWS, designing a  PostgreSQL schema on RDS that ingests, deduplicates, and serves 2M+ investor-grade records with 24/7 availability",
+        "Built Airflow-orchestrated ETL pipelines collecting financial data from 3 vendor APIs, applying LLM transformations (Gemini 2.5 Flash) to extract structured analytics, cutting manual processing from 4 hours to under 1 hour",
+        "Designed SCD Type 2 deduplication logic across PostgreSQL tables, preventing record corruption and enforcing historical data lineage across 2M+ financial data points",
+        "Engineered a standalone Node.js microservice with node-cron scheduling to automate API polling across 3 financial data sources, eliminating manual ingestion and guaranteeing daily collection coverage",
+        "Built an OpenAI embedding pipeline over the financial analytics corpus and implemented a RAG retrieval layer, enabling semantic search across financial disclosures for investor analytics queries",
+        "Designed a model-agnostic LLM orchestration layer supporting hot-swap between Gemini 2.5 Flash, OpenAI GPT-4, and DeepSeek, enabling cost-based routing and eliminating vendor lock-in",
+        "Implemented ELK stack monitoring dashboards tracking ingestion pipeline health across 2M+ records, enabling the internal ops team to detect and resolve data failures proactively",
+        "Optimized PostgreSQL query performance through composite indexing and query restructuring on a , 2M-record schema, reducing analyst report generation latency by 60%",
+        "Provisioned and maintained AWS EC2 production infrastructure for pipeline deployment, configuring auto-restart policies and environment management for 24/7 financial data availability",
+        "Eliminated recurring vendor API costs by building a self-sufficient analytical store through LLM-based extraction and intelligent caching of raw financial filings"
+      ]
+    },
+    {
+      "company": "Total Wireless",
+      "title": "Inventory Analyst",
+      "dates": "May 2025 - Aug 2025",
+      "location": "Boston, MA",
+      "bullets": [
+        "Maintained and optimized Excel-based device inventory tracking system for 500+ units across multiple store locations, reducing collection processing time by 50% and producing weekly management reports"
+      ]
+    },
+    {
+      "company": "Artificial Penetration Software Ltd",
+      "title": "Data Analyst Intern",
+      "dates": "Jan 2024 - May 2024",
+      "location": "Hyderabad, India",
+      "bullets": [
+        "Cleaned and prepared 200K+ customer records by fixing missing values, resolving data-type issues, and standardizing fields in Pandas, ensuring high-quality inputs for downstream analysis",
+        "Developed key performance metrics including consumption trends, net margin performance, and customer lifetime value to identify profitability drivers and high-risk customer segments",
+        "Visualized churn trends using matplotlib and seaborn, surfacing that customers with low net margins and declining consumption were 2x more likely to churn",
+        "Collaborated with cross-functional teams to translate data findings into actionable insights, recommending margin-based pricing adjustments that improved prediction precision by 15%"
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "name": "PyroWatch - Wildfire Detection and Response Platform",
+      "github": "github.com/Scofe-C/wildfire_detection",
+      "tech": [
+        "Python", "XGBoost", "Apache Airflow", "FastAPI", "React", "Tailwind CSS",
+        "GCP", "Cloud Run", "Vertex AI", "Docker", "GitHub Actions", "DVC",
+        "Gemini 2.5 Flash", "SHAP", "Fairlearn", "Monte Carlo Simulation"
+      ],
+      "bullets": [
+        "Architected a 21-task Airflow DAG ingesting and fusing 5 geospatial data feeds (NASA FIRMS, Open-Meteo, NWS, HRRR, GOES) across two regions, processing 50GB+ of geospatial data and lifting downstream model freshness by 40%",
+        "Trained dual XGBoost ignition-prediction models per region with AUC-PR deployment gates of >= 0.89 and >= 0.78 , with auto-archival and zero manual promotion via Vertex AI model registry",
+        "Designed a FastAPI inference service on Cloud Run chaining XGBoost prediction, Monte Carlo fire-spread simulation, and Gemini RAG report generation in a single endpoint, serving requests at sub-2s p95 latency",
+        "Built a React + Tailwind operator dashboard exposing ignition risk maps, fire-spread simulations, and incident reports across CA/TX, cutting analyst time-to-insight from hours to under 2 minutes",
+        "Engineered a Fairlearn-based bias gate enforcing FNR disparity <= 0.15 across region/season/fuel slices, blocking 3 unfair candidate models from production despite passing headline AUC metrics",
+        "Built a drift-detection service combining PSI (>0.2), Jensen-Shannon divergence, and SHAP feature-importance shift, auto-triggering retrains via GitHub Actions and cutting drift response from days to 6 hours",
+        "Implemented DVC-versioned feature parquets backed by GCS, enabling fully reproducible model training and reducing dataset-debug cycles from days to under an hour",
+        "Engineered five GitHub Actions workflows automating build, test, train, and deploy across Cloud Run, Cloud Functions, GCE, and Vertex AI, cutting release cycle from manual hours to ~10 minutes",
+        "Provisioned GCP infrastructure including an 8-role CI/CD-deployer service account, GCS artifact bucket, Cloud Scheduler crons, and a Compute Engine VM running Airflow via Docker Compose",
+        "Implemented a Gemini 2.5 Flash RAG disaster reporter over a curated fuel-type corpus, generating structured incident briefs that replaced 90% of manually authored response templates",
+        "Engineered a two-tier weather data fallback  eliminating 429 rate-limit failures and cutting ingestion downtime by 90%",
+        "Analyzed 15+ geospatial wildfire feeds using Python and SHAP to surface soil moisture as the dominant ignition signal, informing a decision-threshold tune that lifted PR-AUC by 9%"
+      ]
+    },
+    {
+      "name": "Opportunity.AI - AI-Powered Job Matching and Resume Tailoring Platform",
+      "github": "github.com/ibrahim-02/Opurtunity.ai",
+      "tech": [
+        "Python", "FastAPI", "Next.js", "React", "Tailwind CSS",
+        "PostgreSQL", "pgvector", "Vertex AI", "GCP", "Apache Airflow",
+        "Docker", "Gemini 2.5 Flash", "RAG", "Google Cloud Storage"
+      ],
+      "bullets": [
+        "Designed and built a full-stack AI job-matching platform with a Next.js + Tailwind + shadcn/ui frontend and FastAPI backend, reducing job-search time from hours to minutes through semantic search and AI-generated match explanations",
+        "Engineered multi-source job scraping pipelines for 8+ boards  with Airflow DAG orchestration ",
+        "Implemented Vertex AI embedding pipeline with pgvector HNSW index, enabling sub-100ms semantic similarity search across thousands of live job listings using a hybrid scoring engine",
+        "Designed a Gemini-powered resume tailoring pipeline that mirrors JD exact terminology and auto-generates ATS-optimized PDF and plain-text resumes targeting Workday, Greenhouse, Lever, and iCIMS parsers",
+        "Built  API accepting PDF and DOCX files, extracting skills and experience via LLM, then ranking 250+ candidate jobs through semantic and skill-overlap hybrid scoring",
+        "Architected a GCS-backed storage layer for job descriptions, embedding artifacts, and tailored resume files, decoupling storage from compute and enabling horizontal scaling",
+        "Implemented RAG-based career Q&A and job explanation endpoints powered by Gemini, grounding responses in the live job database to deliver role-specific insights and match reasoning"
+      ]
+    }
+  ]
+
+}

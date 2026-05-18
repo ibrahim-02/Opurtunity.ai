@@ -31,6 +31,8 @@ from database.connection import SessionLocal, init_db, upgrade_schema
 from scrapers.filters import is_us_location_multi, passes_title
 from scrapers.workday.database.repository import CompanyRepository, JobRepository
 from scrapers.workday.scraper.discover import discover_companies
+from scrapers.workday.scraper.discover_commoncrawl import discover_from_commoncrawl
+from scrapers.workday.scraper.discover_customers import fetch_customer_names
 from scrapers.workday.scraper.workday import (
     extract_location,
     fetch_job_description,
@@ -95,6 +97,70 @@ def run_discover(limit: int | None = None):
     logger.info("  New       : {}", new_count)
     logger.info("  Total known: {}", len(known_tenants) + new_count)
     logger.info("=" * 60)
+
+
+# ── Common Crawl discovery ────────────────────────────────────────────────────
+
+def run_discover_commoncrawl(num_indices: int = 3):
+    logger.info("=== Workday Discovery — Common Crawl ===")
+    session = SessionLocal()
+    company_repo = CompanyRepository(session)
+    known = company_repo.known_tenants()
+
+    results = asyncio.run(
+        discover_from_commoncrawl(
+            num_indices=num_indices,
+            skip_tenants=known,
+        )
+    )
+
+    new_count = 0
+    for tenant, wd_num, career_site, job_count in results:
+        was_known = tenant in known
+        company_repo.save(tenant, tenant, wd_num, career_site, job_count)
+        if not was_known:
+            new_count += 1
+            logger.info(
+                "  + {}: {}.wd{}.myworkdayjobs.com/{} ({} jobs)",
+                tenant, tenant, wd_num, career_site, job_count,
+            )
+
+    session.close()
+    logger.info("Common Crawl: {} boards found | {} new", len(results), new_count)
+
+
+# ── Workday customers page discovery ─────────────────────────────────────────
+
+def run_discover_customers():
+    logger.info("=== Workday Discovery — Customers Page ===")
+    session = SessionLocal()
+    company_repo = CompanyRepository(session)
+    known = company_repo.known_tenants()
+
+    names = fetch_customer_names()
+    if not names:
+        logger.warning("No customer names found — Workday may have changed their page structure")
+        session.close()
+        return
+
+    logger.info("Running slug-based discovery for {} customer names…", len(names))
+    results = asyncio.run(
+        discover_companies(names, concurrency=_cfg.CONCURRENCY, skip_tenants=known)
+    )
+
+    new_count = 0
+    for company_name, tenant, wd_num, career_site, job_count in results:
+        was_known = tenant in known
+        company_repo.save(company_name, tenant, wd_num, career_site, job_count)
+        if not was_known:
+            new_count += 1
+            logger.info(
+                "  + {}: {}.wd{}.myworkdayjobs.com/{} ({} jobs)",
+                company_name, tenant, wd_num, career_site, job_count,
+            )
+
+    session.close()
+    logger.info("Customers page: {} boards found | {} new", len(results), new_count)
 
 
 # ── Scrape ────────────────────────────────────────────────────────────────────
@@ -219,12 +285,18 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Workday scraper")
     parser.add_argument("--discover", action="store_true",
                         help="Probe SEC companies list for Workday boards")
+    parser.add_argument("--discover-crawl", action="store_true",
+                        help="Discover Workday boards via Common Crawl CDX index")
+    parser.add_argument("--discover-customers", action="store_true",
+                        help="Discover Workday boards from Workday customers page")
     parser.add_argument("--scrape", action="store_true",
                         help="Scrape jobs from known Workday boards")
     parser.add_argument("--full", action="store_true",
-                        help="Discover then scrape")
+                        help="Run all discovery sources then scrape")
     parser.add_argument("--limit", type=int, default=None,
                         help="Cap number of companies (useful for testing)")
+    parser.add_argument("--crawl-indices", type=int, default=3,
+                        help="Number of Common Crawl indices to query (default 3)")
     parser.add_argument("--delay", type=float, default=_cfg.REQUEST_DELAY,
                         help="Seconds between job detail fetches")
     args = parser.parse_args()
@@ -234,9 +306,15 @@ if __name__ == "__main__":
 
     if args.full:
         run_discover(limit=args.limit)
+        run_discover_commoncrawl(num_indices=args.crawl_indices)
+        run_discover_customers()
         run_scrape(limit=args.limit, delay=args.delay)
     elif args.discover:
         run_discover(limit=args.limit)
+    elif getattr(args, "discover_crawl", False):
+        run_discover_commoncrawl(num_indices=args.crawl_indices)
+    elif getattr(args, "discover_customers", False):
+        run_discover_customers()
     elif args.scrape:
         run_scrape(limit=args.limit, delay=args.delay)
     else:

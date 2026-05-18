@@ -14,7 +14,7 @@ import re
 
 from bs4 import BeautifulSoup
 
-_MAX_CHARS = 1500  # ~500 tokens worst-case for mxbai-embed-large's 512-token context
+_MAX_CHARS = 6000  # gemini-embedding-001 supports ~2048 tokens (~8K chars)
 _HEADER_MAX_LEN = 60
 _HEADER_MATCH_RATIO = 0.4  # the regex must cover at least this fraction of the line
 

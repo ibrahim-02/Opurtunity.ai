@@ -1,5 +1,3 @@
-from functools import lru_cache
-
 from fastapi import APIRouter, Depends
 
 from api.schemas import PopularSkillsResponse

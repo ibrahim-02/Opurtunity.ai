@@ -18,7 +18,7 @@ from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
 
 from api.deps import lifespan, limiter
-from api.routes import search, resume, skills
+from api.routes import search, resume, skills, ask, explain
 
 app = FastAPI(title="Job Search API", version="1.0.0", lifespan=lifespan)
 
@@ -39,6 +39,8 @@ app.add_middleware(
 app.include_router(search.router, prefix="/api")
 app.include_router(resume.router, prefix="/api")
 app.include_router(skills.router, prefix="/api")
+app.include_router(ask.router, prefix="/api")
+app.include_router(explain.router, prefix="/api")
 
 
 @app.get("/health")

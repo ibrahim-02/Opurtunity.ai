@@ -17,3 +17,5 @@ class JobExtracted(BaseModel):
     location: Optional[str] = None
     posted_date: Optional[datetime] = None
     salary: Optional[SalaryInfo] = None
+    linkedin_followers: Optional[int] = None
+    linkedin_employees: Optional[int] = None

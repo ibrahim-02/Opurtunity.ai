@@ -1,0 +1,258 @@
+{
+  "Data Engineer": {
+    "role": "Data Engineer",
+    "key_keywords": [
+      "Python",
+      "SQL",
+      "Data Pipelines",
+      "AWS",
+      "ETL",
+      "Spark",
+      "Data Warehousing",
+      "Airflow",
+      "Data Modeling",
+      "Snowflake",
+      "Data Quality",
+      "Real-time Data",
+      "Kafka",
+      "DBT",
+      "Distributed Systems",
+      "Scalability",
+      "Build",
+      "Design",
+      "CI/CD",
+      "Cloud Platforms"
+    ],
+    "key_skills": [
+      "Python",
+      "SQL",
+      "AWS",
+      "Spark",
+      "ETL",
+      "Airflow",
+      "Snowflake",
+      "Kafka",
+      "DBT",
+      "Docker",
+      "Git",
+      "CI/CD",
+      "Azure",
+      "GCP"
+    ],
+    "key_concepts": [
+      "Data Pipelines",
+      "Data Warehousing",
+      "Data Modeling",
+      "Data Quality",
+      "Real-time Data",
+      "Streaming",
+      "Distributed Systems",
+      "Scalability",
+      "Batch Processing",
+      "Data Governance",
+      "Data Lakes",
+      "Data Architecture",
+      "Data Integration"
+    ],
+    "action_verbs": [
+      "Build",
+      "Design",
+      "Optimize",
+      "Develop",
+      "Implement",
+      "Maintain",
+      "Scale",
+      "Automate",
+      "Troubleshoot",
+      "Manage"
+    ],
+    "experience_emphasis": "Companies primarily seek candidates with 3-7 years of experience in data engineering, often requiring a Bachelor's degree in a related technical field. Experience with large-scale data systems and strong problem-solving abilities are frequently highlighted.",
+    "ideal_profile": "An ideal Data Engineer is proficient in Python and SQL, capable of designing, building, and optimizing robust data pipelines and data warehouses on cloud platforms like AWS. They possess strong knowledge of data modeling, real-time data processing, and distributed systems, with a focus on data quality, scalability, and automation."
+  },
+  "ML Engineer": {
+    "role": "ML Engineer",
+    "key_keywords": [
+      "Machine Learning",
+      "Algorithms",
+      "Large Language Models (LLMs)",
+      "Multimodal Models",
+      "AI",
+      "Autonomous Systems",
+      "Perception",
+      "3D Vision",
+      "Simulation",
+      "Scalability",
+      "Cloud Pipelines",
+      "Sensor Data",
+      "Infrastructure",
+      "Optimization",
+      "Programming",
+      "Real-time Systems",
+      "Data Generation",
+      "Environmental Understanding",
+      "Production Systems",
+      "Senior/Staff Experience"
+    ],
+    "key_skills": [
+      "Machine Learning Development",
+      "Algorithm Development",
+      "Large Language Model (LLM) Fine-tuning",
+      "Multimodal Model Development",
+      "Cloud Platform Development",
+      "3D Vision Techniques",
+      "Simulation Development",
+      "Data Optimization",
+      "Programming (e.g., Python)",
+      "Rendering"
+    ],
+    "key_concepts": [
+      "Autonomous Systems",
+      "Self-driving Technology",
+      "Perception Systems",
+      "3D Simulation",
+      "Real-time Performance",
+      "Scalable Systems",
+      "Data Pipelines",
+      "Environmental Understanding",
+      "Offline Analysis",
+      "Cutting-edge Infrastructure"
+    ],
+    "action_verbs": [
+      "Develop",
+      "Implement",
+      "Optimize",
+      "Research",
+      "Build",
+      "Collaborate",
+      "Lead",
+      "Fine-tune",
+      "Validate",
+      "Improve",
+      "Design",
+      "Scale"
+    ],
+    "experience_emphasis": "Senior/Staff level, typically requiring 7+ years of experience in programming and algorithm development, with a strong focus on machine learning and related domains.",
+    "ideal_profile": "An experienced ML Engineer with a strong background in developing and optimizing machine learning models, particularly Large Language Models and 3D vision techniques, for complex, scalable, and real-time autonomous systems, leveraging robust cloud infrastructure."
+  },
+  "AI Engineer": {
+    "role": "AI Engineer",
+    "key_keywords": [
+      "Python",
+      "PyTorch",
+      "TensorFlow",
+      "Kubernetes",
+      "Docker",
+      "MLOps",
+      "Cloud Platforms"
+    ],
+    "key_skills": [
+      "Software Engineering",
+      "Distributed Systems",
+      "Data Pipelines",
+      "Model Deployment",
+      "Performance Optimization"
+    ],
+    "key_concepts": [
+      "Machine Learning",
+      "Deep Learning",
+      "Generative AI",
+      "Natural Language Processing (NLP)",
+      "Computer Vision"
+    ],
+    "action_verbs": [
+      "Design",
+      "Develop",
+      "Scale"
+    ],
+    "experience_emphasis": "Typically 3-5 years for mid-level roles, with senior positions requiring 5+ years of experience.",
+    "ideal_profile": "A skilled software engineer with a strong foundation in machine learning and deep learning, proficient in Python and cloud technologies, capable of designing, building, and deploying scalable AI/ML systems, with a focus on MLOps and performance."
+  },
+  "MLOps": {
+    "role": "MLOps",
+    "key_keywords": [
+      "Python",
+      "AWS",
+      "Kubernetes",
+      "Docker",
+      "Git",
+      "Airflow",
+      "Spark",
+      "Kafka",
+      "SQL",
+      "Terraform",
+      "MLflow",
+      "Azure"
+    ],
+    "key_skills": [
+      "CI/CD",
+      "MLOps",
+      "Data Pipelines",
+      "Model Deployment",
+      "Model Monitoring",
+      "Scalability",
+      "Automation",
+      "Infrastructure as Code"
+    ],
+    "key_concepts": [
+      "Model Lifecycle Management",
+      "Reliability",
+      "Performance Optimization",
+      "Distributed Systems",
+      "Data Governance"
+    ],
+    "action_verbs": [
+      "Design",
+      "Implement",
+      "Deploy",
+      "Automate",
+      "Optimize",
+      "Monitor",
+      "Build"
+    ],
+    "experience_emphasis": "Typically 5+ years in MLOps, DevOps, or Data Engineering; Lead/Manager roles often require 7-8+ years total with 3+ years in MLOps leadership.",
+    "ideal_profile": "An MLOps professional proficient in Python, cloud platforms (AWS, Azure), containerization (Docker, Kubernetes), and CI/CD, capable of designing, building, and automating scalable ML model deployment, monitoring, and data pipelines."
+  },
+  "Software Engineer": {
+    "role": "Software Engineer",
+    "key_keywords": [
+      "Python",
+      "Go",
+      "AWS",
+      "Kubernetes",
+      "Docker",
+      "Microservices",
+      "REST APIs",
+      "SQL/NoSQL",
+      "Git",
+      "C/C++"
+    ],
+    "key_skills": [
+      "Problem-solving",
+      "System Design",
+      "Collaboration",
+      "Communication",
+      "Testing"
+    ],
+    "key_concepts": [
+      "Distributed Systems",
+      "Scalability",
+      "High Availability",
+      "Data Pipelines",
+      "Real-time Systems"
+    ],
+    "action_verbs": [
+      "Design",
+      "Develop",
+      "Implement",
+      "Optimize",
+      "Scale",
+      "Test",
+      "Debug",
+      "Build",
+      "Analyze",
+      "Secure"
+    ],
+    "experience_emphasis": "Mid to Senior level, typically 3-5+ years for general roles, and 5-10+ years for senior/lead positions.",
+    "ideal_profile": "An ideal candidate is a versatile engineer proficient in designing, developing, and optimizing scalable, reliable, and secure software systems, leveraging cloud platforms and distributed architectures. They possess strong problem-solving skills, collaborate effectively, and are adept at working with diverse technical stacks including Python, Go, and C/C++."
+  }
+}

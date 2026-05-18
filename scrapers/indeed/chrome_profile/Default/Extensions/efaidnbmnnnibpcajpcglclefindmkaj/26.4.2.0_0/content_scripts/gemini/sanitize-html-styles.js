@@ -1,0 +1,18 @@
+/*************************************************************************
+* ADOBE CONFIDENTIAL
+* ___________________
+*
+*  Copyright 2015 Adobe Systems Incorporated
+*  All Rights Reserved.
+*
+* NOTICE:  All information contained herein is, and remains
+* the property of Adobe Systems Incorporated and its suppliers,
+* if any.  The intellectual and technical concepts contained
+* herein are proprietary to Adobe Systems Incorporated and its
+* suppliers and are protected by all applicable intellectual property laws,
+* including trade secret and or copyright laws.
+* Dissemination of this information or reproduction of this material
+* is strictly forbidden unless prior written permission is obtained
+* from Adobe Systems Incorporated.
+**************************************************************************/
+window.preExtractHook=(t,e)=>{e.querySelectorAll("img[loading]").forEach(t=>t.removeAttribute("loading")),Array.from(e.querySelectorAll("*")).forEach((t,e)=>{t.setAttribute("data-acrobat-el-idx",e)});const r=Array.from(t.querySelectorAll("*")),o=new Map(r.map((t,e)=>[t,e])),a=new Map;Array.from(t.querySelectorAll("img")).forEach(t=>{const e=o.get(t);if(void 0===e)return;const r=t.getBoundingClientRect(),l=r.width||t.naturalWidth,n=r.height||t.naturalHeight;l>0&&n>0&&a.set(e,{width:l,height:n})});const l=new Map;return Array.from(t.querySelectorAll("img")).forEach(t=>{let e=t.parentElement;for(let t=0;e&&t<8;e=e.parentElement,t+=1){const t=o.get(e);if(void 0!==t&&!l.has(t)){const r=window.getComputedStyle(e),o=r.getPropertyValue("display");if(o.includes("flex")||o.includes("grid")){const e={display:o};(o.includes("flex")?["flex-direction","flex-wrap","justify-content","align-items","gap","row-gap","column-gap"]:["grid-template-columns","grid-template-rows","grid-auto-flow","justify-content","align-items","gap","row-gap","column-gap"]).forEach(t=>{const o=r.getPropertyValue(t);o&&(e[t]=o)}),l.set(t,e)}}}}),{imageRects:a,ancestorLayoutStyles:l}},window.overrideHTMLForConvertHTMLToPDFOp=async(t,e)=>{let r=null;try{r=await new Promise(t=>{chrome.runtime.sendMessage({main_op:"get-gemini-html-to-pdf-config"},e=>{t(e??null)})})}catch(t){}const o=r?.rightSidePanelHidePattern;if(o)try{const e=new RegExp(o,"g");t.querySelectorAll("style").forEach(t=>{const r=t.textContent,o=r.replace(e,"");o!==r&&(t.textContent=o)})}catch(t){}const a=e=>{for(const r of e??[]){const e=t.body?.querySelector(r);if(e)return e}return null},l=a(r?.rightSidePanelSelector),n=a(r?.chatMessagesScrollerSelector);if(t.body){const e=t.createElement("div");e.style.cssText=r?.containerCSS??"";const o=(e,r)=>{const o=t.createElement("div");for(o.style.cssText=r??"";e.firstChild;)o.appendChild(e.firstChild);return o};if(l||n)l&&e.appendChild(o(l,r?.rightPanelSectionCSS)),n&&e.appendChild(o(n,r?.chatSectionCSS));else{const t=a(r?.chatHistorySelector);t&&e.appendChild(t)}e.childNodes.length>0&&t.body.replaceChildren(e)}const i=r?.layoutFixCSS;if(i&&t.head){const e=t.createElement("style");e.textContent=i,t.head.appendChild(e)}if(e){const{imageRects:r,ancestorLayoutStyles:o}=e;Array.from(t.querySelectorAll("img[data-acrobat-el-idx]")).forEach(t=>{const e=parseInt(t.getAttribute("data-acrobat-el-idx"),10),o=r.get(e);o&&(t.style.setProperty("width",`${o.width}px`,"important"),t.style.setProperty("height",`${o.height}px`,"important"),t.style.setProperty("object-fit","contain","important"))}),o.forEach((e,r)=>{const o=t.querySelector(`[data-acrobat-el-idx="${r}"]`);o&&Object.entries(e).forEach(([t,e])=>{o.style.setProperty(t,e,"important")})})}t.querySelectorAll("[data-acrobat-el-idx]").forEach(t=>{t.removeAttribute("data-acrobat-el-idx")})};

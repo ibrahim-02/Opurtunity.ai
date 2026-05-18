@@ -18,6 +18,8 @@ from sqlalchemy.orm import Session
 
 from models.db_models import JobSQL
 from scrapers.filters import (
+    company_is_established,
+    company_mentioned_in_description,
     is_excluded_company,
     is_us_location,
     passes_title,
@@ -59,6 +61,8 @@ class BaseJobRepository:
         posted_date: datetime | None = None,
         salary: dict | None = None,
         source: str | None = None,
+        linkedin_followers: int | None = None,
+        linkedin_employees: int | None = None,
     ) -> str:
         """
         Returns one of:
@@ -79,6 +83,24 @@ class BaseJobRepository:
         if not is_us_location(location):
             logger.info("  [non_us]    '{}' @ '{}' ({})", title, company_name, location)
             return "non_us"
+
+        mentioned, reason = company_mentioned_in_description(company_name, description)
+        if not mentioned:
+            # Override: established company signals (followers ≥ 1K or employees ≥ 1K).
+            # Real companies like "HD Construction Equipment" with 10K+ employees and
+            # 1,952 followers should never be discarded as staffing agencies.
+            if company_is_established(linkedin_followers, linkedin_employees):
+                logger.info(
+                    "  [accepted]   '{}' @ '{}' — name not in description but established "
+                    "(followers={}, employees={})",
+                    title, company_name, linkedin_followers, linkedin_employees,
+                )
+            else:
+                logger.info(
+                    "  [no_company_ref] '{}' @ '{}' — discarding: {} (followers={}, employees={})",
+                    title, company_name, reason, linkedin_followers, linkedin_employees,
+                )
+                return "no_company_ref"
 
         # Pre-check avoids exception mismatch between pg8000 DatabaseError and
         # sqlalchemy.exc.IntegrityError when unique constraint fires on flush().
@@ -144,5 +166,6 @@ class BaseJobRepository:
 def empty_counts() -> dict[str, int]:
     return {
         "scraped": 0, "inserted": 0, "duplicate": 0,
-        "blocked": 0, "bad_title": 0, "non_us": 0, "error": 0,
+        "blocked": 0, "bad_title": 0, "non_us": 0,
+        "no_company_ref": 0, "error": 0,
     }

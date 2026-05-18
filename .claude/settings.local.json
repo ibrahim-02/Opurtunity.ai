@@ -4,7 +4,9 @@
       "Bash(curl -s -o /dev/null -w \"%{http_code}\" \"https://api.lever.co/v0/postings/netflix\")",
       "Bash(curl -s -o /dev/null -w \"%{http_code}\" \"https://jobs.lever.co/netflix\")",
       "Bash(curl -s \"https://api.lever.co/v0/postings/plaid?mode=json&limit=1\")",
-      "Bash(curl -s \"https://api.lever.co/v0/postings/cloudflare?mode=json&limit=1\")"
+      "Bash(curl -s \"https://api.lever.co/v0/postings/cloudflare?mode=json&limit=1\")",
+      "Bash([ -f \"scrapers/$s/config/settings.py\" ])",
+      "Bash(venv311/Scripts/python.exe -c ' *)"
     ]
   }
 }

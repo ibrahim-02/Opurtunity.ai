@@ -31,15 +31,34 @@ class OllamaClient:
         return response.json()["response"]
 
     def embed(self, text: str, model: str | None = None) -> list[float] | None:
-        """Generate an embedding vector using /api/embed."""
+        """Document embedding — uses search_document: prefix for nomic-embed-text."""
         url = f"{self.base_url}/api/embed"
-        payload = {"model": model or EMBED_MODEL, "input": text, "truncate": True}
+        m = model or EMBED_MODEL
+        # nomic-embed-text requires explicit task prefix for asymmetric retrieval
+        if "nomic" in m:
+            text = f"search_document: {text}"
+        payload = {"model": m, "input": text, "truncate": True}
         try:
             response = self.client.post(url, json=payload)
             response.raise_for_status()
             return response.json()["embeddings"][0]
         except Exception as e:
             logger.error(f"Embedding failed: {e}")
+            return None
+
+    def embed_query(self, text: str) -> list[float] | None:
+        """Query embedding — uses search_query: prefix for nomic-embed-text."""
+        url = f"{self.base_url}/api/embed"
+        m = EMBED_MODEL
+        if "nomic" in m:
+            text = f"search_query: {text}"
+        payload = {"model": m, "input": text, "truncate": True}
+        try:
+            response = self.client.post(url, json=payload)
+            response.raise_for_status()
+            return response.json()["embeddings"][0]
+        except Exception as e:
+            logger.error(f"Query embedding failed: {e}")
             return None
 
     def is_available(self) -> bool:

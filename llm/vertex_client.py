@@ -58,6 +58,22 @@ class VertexClient:
         )
         return response.text or ""
 
+    def embed_query(self, text: str) -> list[float] | None:
+        """Query embedding with RETRIEVAL_QUERY task type for asymmetric retrieval."""
+        try:
+            result = self._client.models.embed_content(
+                model=self.embed_model,
+                contents=text,
+                config=types.EmbedContentConfig(
+                    output_dimensionality=self.embed_dim,
+                    task_type="RETRIEVAL_QUERY",
+                ),
+            )
+            return list(result.embeddings[0].values)
+        except Exception as e:
+            logger.error(f"Vertex query embedding failed: {e}")
+            return None
+
     @retry(stop=stop_after_attempt(3), wait=wait_exponential(min=2, max=10))
     def embed(self, text: str, model: str | None = None) -> list[float] | None:
         """Return a single embedding vector at self.embed_dim dimensions."""

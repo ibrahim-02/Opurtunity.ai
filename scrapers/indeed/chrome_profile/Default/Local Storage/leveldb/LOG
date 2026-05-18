@@ -1,0 +1,16 @@
+2026/05/07-11:37:05.085 6254 Reusing MANIFEST C:\Users\mohdi\Downloads\job_scrapper\scrapers\indeed\chrome_profile\Default\Local Storage\leveldb/MANIFEST-000001
+2026/05/07-11:37:05.093 6254 Recovering log #95
+2026/05/07-11:37:05.099 6254 Level-0 table #98: started
+2026/05/07-11:37:05.109 6254 Level-0 table #98: 183255 bytes OK
+2026/05/07-11:37:05.110 6254 Recovering log #97
+2026/05/07-11:37:05.113 6254 Reusing old log C:\Users\mohdi\Downloads\job_scrapper\scrapers\indeed\chrome_profile\Default\Local Storage\leveldb/000097.log 
+2026/05/07-11:37:05.115 6254 Delete type=0 #95
+2026/05/07-11:37:05.116 1a4c Compacting 4@0 + 1@1 files
+2026/05/07-11:37:05.144 1a4c Generated table #99@0: 249 keys, 189847 bytes
+2026/05/07-11:37:05.144 1a4c Compacted 4@0 + 1@1 files => 189847 bytes
+2026/05/07-11:37:05.145 1a4c compacted to: files[ 0 1 1 0 0 0 0 ]
+2026/05/07-11:37:05.146 1a4c Delete type=2 #90
+2026/05/07-11:37:05.146 1a4c Delete type=2 #92
+2026/05/07-11:37:05.146 1a4c Delete type=2 #94
+2026/05/07-11:37:05.146 1a4c Delete type=2 #96
+2026/05/07-11:37:05.146 1a4c Delete type=2 #98

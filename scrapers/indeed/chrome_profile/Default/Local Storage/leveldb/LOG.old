@@ -1,0 +1,92 @@
+2026/05/06-11:34:59.449 8074 Reusing MANIFEST C:\Users\mohdi\Downloads\job_scrapper\scrapers\indeed\chrome_profile\Default\Local Storage\leveldb/MANIFEST-000001
+2026/05/06-11:34:59.454 8074 Recovering log #56
+2026/05/06-11:34:59.457 8074 Level-0 table #59: started
+2026/05/06-11:34:59.463 8074 Level-0 table #59: 77108 bytes OK
+2026/05/06-11:34:59.468 8074 Delete type=0 #56
+2026/05/06-11:35:59.478 8128 Level-0 table #62: started
+2026/05/06-11:35:59.483 8128 Level-0 table #62: 78355 bytes OK
+2026/05/06-11:35:59.484 8128 Delete type=0 #60
+2026/05/06-11:35:59.484 8074 Compacting 4@0 + 1@1 files
+2026/05/06-11:35:59.490 8074 Generated table #63@0: 165 keys, 82062 bytes
+2026/05/06-11:35:59.490 8074 Compacted 4@0 + 1@1 files => 82062 bytes
+2026/05/06-11:35:59.490 8074 compacted to: files[ 0 1 1 0 0 0 0 ]
+2026/05/06-11:35:59.491 8074 Delete type=2 #53
+2026/05/06-11:35:59.491 8074 Delete type=2 #55
+2026/05/06-11:35:59.491 8074 Delete type=2 #57
+2026/05/06-11:35:59.491 8074 Delete type=2 #59
+2026/05/06-11:35:59.491 8074 Delete type=2 #62
+2026/05/06-11:40:27.568 8128 Level-0 table #65: started
+2026/05/06-11:40:27.572 8128 Level-0 table #65: 77998 bytes OK
+2026/05/06-11:40:27.573 8128 Delete type=0 #61
+2026/05/06-11:43:13.073 8128 Level-0 table #67: started
+2026/05/06-11:43:13.077 8128 Level-0 table #67: 78560 bytes OK
+2026/05/06-11:43:13.078 8128 Delete type=0 #64
+2026/05/06-11:46:17.682 8128 Level-0 table #69: started
+2026/05/06-11:46:17.687 8128 Level-0 table #69: 85284 bytes OK
+2026/05/06-11:46:17.688 8128 Delete type=0 #66
+2026/05/06-11:49:40.406 8128 Level-0 table #71: started
+2026/05/06-11:49:40.411 8128 Level-0 table #71: 92477 bytes OK
+2026/05/06-11:49:40.412 8128 Delete type=0 #68
+2026/05/06-11:49:40.413 8128 Compacting 4@0 + 1@1 files
+2026/05/06-11:49:40.419 8128 Generated table #72@0: 176 keys, 96959 bytes
+2026/05/06-11:49:40.419 8128 Compacted 4@0 + 1@1 files => 96959 bytes
+2026/05/06-11:49:40.420 8128 compacted to: files[ 0 1 1 0 0 0 0 ]
+2026/05/06-11:49:40.421 8128 Delete type=2 #63
+2026/05/06-11:49:40.421 8128 Delete type=2 #65
+2026/05/06-11:49:40.421 8128 Delete type=2 #67
+2026/05/06-11:49:40.421 8128 Delete type=2 #69
+2026/05/06-11:49:40.421 8128 Delete type=2 #71
+2026/05/06-11:53:22.220 8128 Level-0 table #74: started
+2026/05/06-11:53:22.225 8128 Level-0 table #74: 100366 bytes OK
+2026/05/06-11:53:22.226 8128 Delete type=0 #70
+2026/05/06-11:57:23.404 8128 Level-0 table #76: started
+2026/05/06-11:57:23.409 8128 Level-0 table #76: 107677 bytes OK
+2026/05/06-11:57:23.411 8128 Delete type=0 #73
+2026/05/06-12:01:35.962 8128 Level-0 table #78: started
+2026/05/06-12:01:35.969 8128 Level-0 table #78: 113985 bytes OK
+2026/05/06-12:01:35.971 8128 Delete type=0 #75
+2026/05/06-12:06:19.136 8128 Level-0 table #80: started
+2026/05/06-12:06:19.142 8128 Level-0 table #80: 128755 bytes OK
+2026/05/06-12:06:19.144 8128 Delete type=0 #77
+2026/05/06-12:06:19.145 8128 Compacting 4@0 + 1@1 files
+2026/05/06-12:06:19.153 8128 Generated table #81@0: 198 keys, 133336 bytes
+2026/05/06-12:06:19.153 8128 Compacted 4@0 + 1@1 files => 133336 bytes
+2026/05/06-12:06:19.154 8128 compacted to: files[ 0 1 1 0 0 0 0 ]
+2026/05/06-12:06:19.155 8128 Delete type=2 #72
+2026/05/06-12:06:19.155 8128 Delete type=2 #74
+2026/05/06-12:06:19.155 8128 Delete type=2 #76
+2026/05/06-12:06:19.155 8128 Delete type=2 #78
+2026/05/06-12:06:19.155 8128 Delete type=2 #80
+2026/05/06-12:11:11.688 8128 Level-0 table #83: started
+2026/05/06-12:11:11.693 8128 Level-0 table #83: 132512 bytes OK
+2026/05/06-12:11:11.695 8128 Delete type=0 #79
+2026/05/06-12:16:19.844 8128 Level-0 table #85: started
+2026/05/06-12:16:19.851 8128 Level-0 table #85: 140058 bytes OK
+2026/05/06-12:16:19.853 8128 Delete type=0 #82
+2026/05/06-12:21:42.370 8128 Level-0 table #87: started
+2026/05/06-12:21:42.376 8128 Level-0 table #87: 147001 bytes OK
+2026/05/06-12:21:42.378 8128 Delete type=0 #84
+2026/05/06-12:27:36.182 8128 Level-0 table #89: started
+2026/05/06-12:27:36.192 8128 Level-0 table #89: 158416 bytes OK
+2026/05/06-12:27:36.194 8128 Delete type=0 #86
+2026/05/06-12:27:36.195 8128 Compacting 4@0 + 1@1 files
+2026/05/06-12:27:36.216 8128 Generated table #90@0: 226 keys, 163553 bytes
+2026/05/06-12:27:36.216 8128 Compacted 4@0 + 1@1 files => 163553 bytes
+2026/05/06-12:27:36.216 8128 compacted to: files[ 0 1 1 0 0 0 0 ]
+2026/05/06-12:27:36.218 8128 Delete type=2 #81
+2026/05/06-12:27:36.218 8128 Delete type=2 #83
+2026/05/06-12:27:36.218 8128 Delete type=2 #85
+2026/05/06-12:27:36.218 8128 Delete type=2 #87
+2026/05/06-12:27:36.218 8128 Delete type=2 #89
+2026/05/06-12:34:01.686 8128 Level-0 table #92: started
+2026/05/06-12:34:01.695 8128 Level-0 table #92: 173437 bytes OK
+2026/05/06-12:34:01.697 8128 Delete type=0 #88
+2026/05/06-12:40:40.861 8128 Level-0 table #94: started
+2026/05/06-12:40:40.868 8128 Level-0 table #94: 179038 bytes OK
+2026/05/06-12:40:40.869 8128 Delete type=0 #91
+2026/05/06-12:43:29.897 8128 Level-0 table #96: started
+2026/05/06-12:43:29.908 8074 Current memtable full; waiting...
+2026/05/06-12:43:29.920 8128 Level-0 table #96: 180551 bytes OK
+2026/05/06-12:43:29.923 8128 Delete type=0 #93
+2026/05/06-12:43:29.934 8128 Level-0 table #98: started
+2026/05/06-12:43:29.953 8128 Level-0 table #98: 183255 bytes OK

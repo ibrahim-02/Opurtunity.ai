@@ -27,27 +27,28 @@ logger.add(
 )
 
 
-def fetch_pending(session, batch: int, source: str | None) -> list:
+def fetch_pending(session, batch: int, source: str | None, force: bool = False) -> list:
     # skip scrape-time encoding casualties (see enrich_jobs.py for context)
+    embedding_clause = "" if force else "AND embedding IS NULL"
     if source:
-        q = text("""
+        q = text(f"""
             SELECT id, title, company_name, description
             FROM jobsql
             WHERE description IS NOT NULL
               AND description NOT LIKE '%??%'
-              AND embedding IS NULL
+              {embedding_clause}
               AND source = :source
             ORDER BY id
             LIMIT :batch
         """)
         return session.execute(q, {"batch": batch, "source": source}).fetchall()
     else:
-        q = text("""
+        q = text(f"""
             SELECT id, title, company_name, description
             FROM jobsql
             WHERE description IS NOT NULL
               AND description NOT LIKE '%??%'
-              AND embedding IS NULL
+              {embedding_clause}
             ORDER BY id
             LIMIT :batch
         """)
@@ -58,7 +59,7 @@ def _vec_str(vector: list[float]) -> str:
     return "[" + ",".join(str(v) for v in vector) + "]"
 
 
-def run(batch: int, source: str | None, delay: float):
+def run(batch: int, source: str | None, delay: float, force: bool = False):
     logger.info("Connecting to database...")
     session = SessionLocal()
 
@@ -73,7 +74,7 @@ def run(batch: int, source: str | None, delay: float):
         return
 
     logger.info("Fetching pending jobs...")
-    rows = fetch_pending(session, batch, source)
+    rows = fetch_pending(session, batch, source, force=force)
     if not rows:
         logger.info("No jobs pending embedding.")
         session.close()
@@ -94,7 +95,10 @@ def run(batch: int, source: str | None, delay: float):
                 logger.warning(f"  [{i}/{len(rows)}] Could not get description — skipping")
                 continue
 
-            embed_text = parse_sections(text_content)
+            parsed = parse_sections(text_content)
+            # Title is stripped by section_parser — always prepend it so role/domain
+            # context lands in the embedding space.
+            embed_text = f"{title}\n\n{parsed}" if title else parsed
             if not embed_text or not embed_text.strip():
                 counts["error"] += 1
                 logger.warning(f"  [{i}/{len(rows)}] Empty after section-parse — skipping")
@@ -135,5 +139,6 @@ if __name__ == "__main__":
     parser.add_argument("--batch", type=int, default=50, help="Max jobs to embed (default: 50)")
     parser.add_argument("--source", type=str, default=None, help="Filter by source: linkedin | greenhouse")
     parser.add_argument("--delay", type=float, default=0.05, help="Seconds between embeddings (default: 0.05)")
+    parser.add_argument("--force", action="store_true", help="Re-embed jobs that already have embeddings")
     args = parser.parse_args()
-    run(batch=args.batch, source=args.source, delay=args.delay)
+    run(batch=args.batch, source=args.source, delay=args.delay, force=args.force)
